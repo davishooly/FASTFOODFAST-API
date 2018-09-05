@@ -55,3 +55,8 @@ class FoodOrder:
             destinantion=self.destinantion,
             date=str(self.date),
         )
+
+    def get_by_id(self, _d):
+        for order in FoodOrders:
+            if order._id == _d:
+                return order
