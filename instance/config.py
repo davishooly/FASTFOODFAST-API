@@ -1,7 +1,11 @@
+import os
+
+
 class Config:
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 class DevelopmentConfig(Config):

@@ -1,6 +1,10 @@
 from flask_restful import Resource, reqparse
 from models.models import FoodItem, FoodItems, FoodOrder, FoodOrders
 
+from flask_jwt_extended import jwt_required
+
+from utils import validators
+
 
 class Foods(Resource):
 
@@ -12,6 +16,7 @@ class Foods(Resource):
     parser.add_argument("price", type=int, required=True,
                         help="This field can not be left bank")
 
+    @jwt_required
     def post(self):
         """ create a new food item"""
         data = Foods.parser.parse_args()
@@ -20,10 +25,21 @@ class Foods(Resource):
         description = data["description"]
         price = data["price"]
 
+        validate = validators.Validators()
+
+        if not validate.valid_inputs(name):
+            return {"message": "foodname must contain alphanumeric"
+                    "characters only"}, 400
+
+        if not validate.valid_inputs(description):
+            return {"message": "description must contain alphanumeric"
+                    " characters only"}, 400
+
         food_item = FoodItem(name, description, price)
         FoodItems.append(food_item)
         return {"message": "Food item created successfully"}, 201
 
+    @jwt_required
     def get(self):
         """ Get all food items"""
 
@@ -36,6 +52,7 @@ class SpecificOrder(Resource):
     parser.add_argument("status", type=str, required=True,
                         help="This field can not be left bank")
 
+    @jwt_required
     def get(self, order_id):
         """ Get a specific order"""
         order = FoodOrder().get_by_id(order_id)
@@ -45,11 +62,18 @@ class SpecificOrder(Resource):
         else:
             return {"order": order.serialize()}
 
+    @jwt_required
     def put(self, order_id):
         """ Update a specific order"""
         data = SpecificOrder.parser.parse_args()
 
         status = data["status"]
+
+        validate = validators.Validators()
+
+        if not validate.valid_inputs(status):
+            return {"message": "description must contain alphanumeric"
+                    "characters only"}, 400
 
         order = FoodOrder().get_by_id(order_id)
 

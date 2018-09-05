@@ -1,7 +1,10 @@
 from datetime import datetime
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 FoodItems = []
 FoodOrders = []
+Users = []
 
 
 class FoodItem:
@@ -60,3 +63,30 @@ class FoodOrder:
         for order in FoodOrders:
             if order._id == _d:
                 return order
+
+
+class User:
+
+    user_id = 1
+
+    def __init__(self,  username=None, email=None, password=None,
+                 is_admin=None):
+
+        self.username = username
+        self.email = email
+        if password:
+            self.password_hash = generate_password_hash(password)
+        self.is_admin = is_admin
+        self.id = User.user_id
+
+        User.user_id += 1
+
+    def get_by_username(self, username):
+        for user in Users:
+            if user.username == username:
+                return user
+
+    def get_by_email(self, email):
+        for user in Users:
+            if user.email == email:
+                return user
