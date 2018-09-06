@@ -22,7 +22,7 @@ def create_app(config_mode):
 
     from .admin import admin_blueprint as admin_blp
     admin = Api(admin_blp)
-    app.register_blueprint(admin_blp, url_prefix="/api/v1/admin")
+    app.register_blueprint(admin_blp, url_prefix="/api/v1")
 
     from .auth import auth_blueprint as auth_blp
     auth = Api(auth_blp)
@@ -30,7 +30,7 @@ def create_app(config_mode):
 
     from .customer import customer_blueprint as customer_blp
     customer = Api(customer_blp)
-    app.register_blueprint(customer_blp, url_prefix="/api/v1/customer")
+    app.register_blueprint(customer_blp, url_prefix="/api/v1")
 
     admin.add_resource(Foods, '/fooditems')
     admin.add_resource(SpecificOrder, '/fooditems/orders/<int:order_id>')

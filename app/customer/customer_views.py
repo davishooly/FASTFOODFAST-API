@@ -40,5 +40,6 @@ class GetOrders(Resource):
     @jwt_required
     def get(self):
         """get a list of all orders"""
+        print(FoodOrders)
         return {"List orders": [food_order.serialize()
                                 for food_order in FoodOrders]}

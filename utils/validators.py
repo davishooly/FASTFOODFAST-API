@@ -18,8 +18,8 @@ class Validators:
 
     def valid_inputs(self, string_inputs):
         """ validate for inputs """
-        # return re.match("^[a-zA-Z0-9-\._@ ]+$", string_inputs)
         return re.match("^[a-zA-Z0-9-\._@ ]+$", string_inputs)
+        # return re.match("^[a-zA-Z0-9-\._@ ]+$", string_inputs)
 
     def valid_is_admin(self, is_admin):
         """ validate is_admin """

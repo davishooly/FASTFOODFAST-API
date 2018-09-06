@@ -29,7 +29,7 @@ class Foods(Resource):
 
         if not validate.valid_inputs(name):
             return {"message": "foodname must contain alphanumeric"
-                    "characters only"}, 400
+                    " characters only"}, 400
 
         if not validate.valid_inputs(description):
             return {"message": "description must contain alphanumeric"
@@ -72,8 +72,8 @@ class SpecificOrder(Resource):
         validate = validators.Validators()
 
         if not validate.valid_inputs(status):
-            return {"message": "description must contain alphanumeric"
-                    "characters only"}, 400
+            return {"message": "status must contain alphanumeric"
+                    " characters only"}, 400
 
         order = FoodOrder().get_by_id(order_id)
 

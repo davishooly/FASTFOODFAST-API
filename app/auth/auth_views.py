@@ -43,7 +43,7 @@ class SignUp(Resource):
                     " characters only"}, 400
 
         if not validate.valid_email(email):
-            return {"messege": "enter valid"}, 400
+            return {"message": "enter valid email"}, 400
 
         if not validate.valid_password(password):
             return {"message": "password should start with a capital letter"
@@ -61,7 +61,6 @@ class SignUp(Resource):
         user = User(username, email, password, bool(is_admin))
 
         Users.append(user)
-        print(user.is_admin)
 
         return {"message": f"user {username} created successfully"}, 201
 
@@ -95,5 +94,5 @@ class Login(Resource):
         if user and check_password_hash(user.password_hash, password):
             expires = datetime.timedelta(minutes=30)
             token = create_access_token(user.username, expires_delta=expires)
-            return {'token': token, 'message': f'successfully logged'}, 200
+            return {'token': token, 'message': 'successfully logged'}, 200
         return {'message': 'user not found'}, 404
