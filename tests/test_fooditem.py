@@ -143,5 +143,5 @@ class TestFoodItem(unittest.TestCase):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
-
+        print(response.data)
         self.assertEqual(response.status_code, 200)

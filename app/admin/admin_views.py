@@ -35,13 +35,13 @@ class Foods(Resource):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
 
-        food_item = FoodItem().get_by_name(name)
-
-        if food_item:
-            return {"message": "food item already exists"}, 400
+        # food_item = FoodItem().get_by_name(name)
+        #   if food_item:
+        #     return {"message": "food item already exists"}, 400
 
         food_item = FoodItem(name, description, price)
         FoodItems.append(food_item)
+
         return {"message": "Food item created successfully"}, 201
 
     @jwt_required
@@ -53,15 +53,16 @@ class Foods(Resource):
 
 class SpecificFoodItem(Resource):
 
+    @jwt_required
     def delete(self, food_item_id):
         """ delete food item """
         food_item = FoodItem().get_by_id(food_item_id)
 
         if not food_item:
             return {"message": "food item does not exist"}, 404
-        else:
-            FoodItems.remove(food_item)
-            return {"message": "item deleted sucessfully"}, 200
+
+        FoodItems.remove(food_item)
+        return {"message": "item deleted sucessfully"}, 200
 
 
 class SpecificOrder(Resource):

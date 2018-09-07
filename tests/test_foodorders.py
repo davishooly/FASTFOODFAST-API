@@ -60,7 +60,7 @@ class TestFoodOrder(unittest.TestCase):
         return token
 
     def test_customer_post_order(self):
-        """ Test for a customer to place an order for a food item """
+        """ Test for a customer to place an order  """
 
         token = self.get_token()
 
@@ -198,3 +198,18 @@ class TestFoodOrder(unittest.TestCase):
         self.assertEqual(json.loads(response.data)[
                          'message'], "status must contain alphanumeric"
                          " characters only")
+
+    def test_delete_food_item(self):
+        """ Test to delete a specific food item  """
+        token = self.get_token()
+
+        response = self.client.delete(
+            "api/v1/fooditems/1",
+            headers={'content-type': 'application/json',
+                     "Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "item deleted sucessfully")
