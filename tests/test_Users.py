@@ -132,7 +132,7 @@ class TestUser(unittest.TestCase):
                          "message"], "user not found")
 
     def test_invalid_username(self):
-        """ Test if username is inavalid """
+        """ Test if username is invalid """
         data = {
             "username": "*****1",
             "email": "davis@gmail.com",
@@ -153,6 +153,8 @@ class TestUser(unittest.TestCase):
                          " alphanumeric characters only")
 
     def test_invalid_email(self):
+        """ Test invalid email """
+
         data = {
             "username": "daviskk",
             "email": "davis",
@@ -172,6 +174,8 @@ class TestUser(unittest.TestCase):
                          "message"], "enter valid email")
 
     def test_invalid_password(self):
+        """ Test invalid password """
+
         data = {
             "username": "mwanzia",
             "email": "mwanzia@gmail.com",
