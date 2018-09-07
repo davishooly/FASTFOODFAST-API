@@ -1,5 +1,6 @@
 # FASTFOODFAST-API
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![Coverage Status](https://coveralls.io/repos/github/davishooly/FASTFOODFAST-API/badge.svg?branch=develop)](https://coveralls.io/github/davishooly/FASTFOODFAST-API?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a236552c6eda78af4c69/maintainability)](https://codeclimate.com/github/davishooly/FASTFOODFAST-API/maintainability)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9808cd8c1dfd4695a43de932c7af6e45)](https://www.codacy.com/app/davishooly/FASTFOODFAST-API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=davishooly/FASTFOODFAST-API&amp;utm_campaign=Badge_Grade)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
