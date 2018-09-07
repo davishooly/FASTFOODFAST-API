@@ -31,8 +31,15 @@ class FoodItem:
         )
 
     def get_by_id(self, _id):
+        """get food by id """
         for food_item in FoodItems:
             if food_item.id == _id:
+                return food_item
+
+    def get_by_name(self, name):
+        """ get food by name """
+        for food_item in FoodItems:
+            if food_item.name == name:
                 return food_item
 
 
