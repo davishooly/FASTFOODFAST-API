@@ -30,7 +30,7 @@ Fast food fast is a food delivery application.
 Clone the repository below
 
 ```
-git clone -b challange-two-develop git@github.com:davishooly/FastFoodFast.git
+git clone https://github.com/davishooly/FASTFOODFAST-API.git
 ```
 
 ### Create and activate a virtual environment
@@ -65,7 +65,7 @@ $ flask run
 | GET    | /api/v1/fooditems/orders        | get the all food orders               |
 | PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
 | GET    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
-| DELETE | /api/v1/fooditems/<{id}>        | delete on the status of an order      |
+| DELETE | /api/v1/fooditems/<{id}>        | delete a specific order               |
 | DELETE | /api/v1/fooditems/orders/<{id}> | delete a specific food order          |
 
 ### Testing
