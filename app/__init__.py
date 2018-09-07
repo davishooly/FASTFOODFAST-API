@@ -4,8 +4,8 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
 from instance.config import app_config
-from .admin.admin_views import Foods, SpecificOrder
-from .customer.customer_views import PostOrders, GetOrders
+from .admin.admin_views import Foods, SpecificOrder, SpecificFoodItem
+from .customer.customer_views import PostOrders, GetOrders, Order
 
 from .auth.auth_views import SignUp, Login
 
@@ -33,6 +33,7 @@ def create_app(config_mode):
     app.register_blueprint(customer_blp, url_prefix="/api/v1")
 
     admin.add_resource(Foods, '/fooditems')
+    admin.add_resource(SpecificFoodItem, '/fooditems/<int:food_item_id>')
     admin.add_resource(SpecificOrder, '/fooditems/orders/<int:order_id>')
 
     auth.add_resource(SignUp, '/signup')
@@ -40,5 +41,6 @@ def create_app(config_mode):
 
     customer.add_resource(PostOrders, '/fooditems/<int:food_id>/orders')
     customer.add_resource(GetOrders, '/fooditems/orders')
+    customer.add_resource(Order, '/fooditems/orders/<int:food_order_id>')
 
     return app
