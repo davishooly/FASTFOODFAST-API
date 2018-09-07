@@ -43,3 +43,16 @@ class GetOrders(Resource):
         print(FoodOrders)
         return {"List orders": [food_order.serialize()
                                 for food_order in FoodOrders]}
+
+
+class Order(Resource):
+
+    def delete(self, food_order_id):
+        """ delete food order """
+        food_order = FoodOrder().get_by_id(food_order_id)
+
+        if not food_order:
+            return {"message": "food order does not exist"}, 404
+        else:
+            FoodOrders.remove(food_order)
+            return {"message": "order deleted sucessfully"}, 200
