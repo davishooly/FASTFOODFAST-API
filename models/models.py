@@ -67,6 +67,7 @@ class FoodOrder:
         )
 
     def get_by_id(self, _d):
+        """ get food order by id """
         for order in FoodOrders:
             if order._id == _d:
                 return order
@@ -89,11 +90,13 @@ class User:
         User.user_id += 1
 
     def get_by_username(self, username):
+        """ get user by username """
         for user in Users:
             if user.username == username:
                 return user
 
     def get_by_email(self, email):
+        """ get user by email """
         for user in Users:
             if user.email == email:
                 return user
