@@ -54,12 +54,14 @@ class TestUser(unittest.TestCase):
         return token
 
     # def test_signup(self):
-    #     """ Test for signup """
+    #     """ Test for signup sucessfull """
     #     response = self.signup()
-    #     self.assertEqual(response.status_code, 201)
+
+    #     print(response.data)
+    #     self.assertEqual(response.status_code, 200)
 
     def test_login(self):
-        """ Test for login """
+        """ Test for login sucessfull """
         self.signup()
         response = self.login()
 
