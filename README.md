@@ -25,7 +25,7 @@ Fast food fast is a food delivery application.
 ## Prerequisite
 
 - [Python3.6](https://www.python.org/downloads/release/python-365/)
-- [Virtua Environment](https://virtualenv.pypa.io/en/stable/installation/)
+- [Virtual Environment](https://virtualenv.pypa.io/en/stable/installation/)
 
 # Installation and Setup
 
