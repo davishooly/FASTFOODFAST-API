@@ -16,9 +16,9 @@ Fast food fast is a food delivery application.
 
 - An admin creates food items
 - A normal user creates an account and can login
-- A logged in user can view available food items created by the admin
-- A user chooses on a food item and makes an order
-- An Admin can accept or reject the order request from a user
+- A user can view available food items created by the admin
+- A user chooses on a food item and makes an order upon login
+- An Admin can accept or reject an order request from a user
 - A user gets notified on his/her order status
 - Accepted orders are delivered
 
@@ -63,8 +63,8 @@ $ flask run
 | POST   | /api/v1/auth/login              | login a user                          |
 | POST   | /api/v1/fooditems               | post a fooditem                       |
 | GET    | /api/v1/fooditems               | get all available fooditems           |
-| POST   | /api/v1/fooditems/<{id}>/orders | post an order on a specific food item |
-| GET    | /api/v1/fooditems/orders        | get the all food orders               |
+| POST   | /api/v1/fooditems/<{id}>/orders | post an order of a specific food item |
+| GET    | /api/v1/fooditems/orders        | get a list of all food orders         |
 | PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
 | GET    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
 | DELETE | /api/v1/fooditems/<{id}>        | delete a specific order               |
