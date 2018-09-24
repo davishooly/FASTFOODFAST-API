@@ -12,6 +12,7 @@ class FoodItem:
     food_item_id = 1
 
     def __init__(self, name=None, description=None, price=None):
+        """ class constructer """
         self.name = name
         self.description = description
         self.price = price
@@ -48,6 +49,7 @@ class FoodOrder:
     food_order_id = 1
 
     def __init__(self, name=None,  destinantion=None):
+        """ class constructer """
         self.destinantion = destinantion
         self.name = name
         self.date = datetime.now().replace(second=0, microsecond=0)
@@ -79,7 +81,7 @@ class User:
 
     def __init__(self,  username=None, email=None, password=None,
                  is_admin=None):
-
+        """ class constructer """
         self.username = username
         self.email = email
         if password:
