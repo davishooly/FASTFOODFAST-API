@@ -5,7 +5,7 @@ class Config:
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
-    SECRET_KEY = "CHANGE-TO-YOUR-LIKING******$%#%^******"
+    SECRET_KEY = "kimame-davis-secret@#@#*&$%#%^***"
 
 
 class DevelopmentConfig(Config):
