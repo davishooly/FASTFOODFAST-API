@@ -1,6 +1,8 @@
+# module import
 import unittest
 import json
 
+# factory function import
 from app import create_app
 
 

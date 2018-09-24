@@ -1,10 +1,11 @@
+# module imports
 from flask_restful import Resource, reqparse
-
-from models.models import FoodOrder, FoodOrders, FoodItem
 
 from flask_jwt_extended import jwt_required
 
+# local imports
 from utils import validators
+from models.models import FoodOrder, FoodOrders, FoodItem
 
 
 class PostOrders(Resource):
@@ -14,6 +15,8 @@ class PostOrders(Resource):
 
     @jwt_required
     def post(self, food_id):
+        """post an order"""
+
         data = PostOrders.parser.parse_args()
 
         destination = data["destination"]

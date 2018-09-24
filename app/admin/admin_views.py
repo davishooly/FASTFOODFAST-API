@@ -1,7 +1,10 @@
+# module imports
 from flask_restful import Resource, reqparse
-from models.models import FoodItem, FoodItems, FoodOrder, FoodOrders
 
 from flask_jwt_extended import jwt_required
+
+# local imports
+from models.models import FoodItem, FoodItems, FoodOrder, FoodOrders
 
 from utils import validators
 

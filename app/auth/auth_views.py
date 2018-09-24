@@ -1,11 +1,5 @@
+# module imports
 from flask import Flask
-
-
-from flask_restful import Resource, reqparse
-
-from models.models import User, Users
-
-from utils import validators
 
 from werkzeug.security import check_password_hash
 
@@ -13,8 +7,16 @@ from flask_jwt_extended import create_access_token
 
 import datetime
 
+from flask_restful import Resource, reqparse
+
+# local imports
+from models.models import User, Users
+
+from utils import validators
+
 
 class SignUp(Resource):
+    """ class to create a new user """
 
     parser = reqparse.RequestParser()
 
@@ -66,6 +68,7 @@ class SignUp(Resource):
 
 
 class Login(Resource):
+    """ class to login a user """
     parser = reqparse.RequestParser()
 
     parser.add_argument("username", type=str, required=True,
@@ -74,6 +77,8 @@ class Login(Resource):
                         help="This field can not be left bank")
 
     def post(self):
+        """ login a user"""
+
         data = Login.parser.parse_args()
 
         username = data["username"]
