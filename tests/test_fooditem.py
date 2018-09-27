@@ -3,6 +3,8 @@ import json
 
 from app import create_app
 
+from db_tests import migrate, drop
+
 
 class TestFoodItem(unittest.TestCase):
 
@@ -11,12 +13,16 @@ class TestFoodItem(unittest.TestCase):
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        """ teardown """
-        self.app_context.pop()
+        self.create_data = {
+            "food_data": {
+                "name": "njahindengu",
+                "description": "sliced",
+                "price": 47
+            }
+        }
+        with self.app.app_context():
+            drop()
+            migrate()
 
     def signup(self):
         """ signup function """
@@ -24,7 +30,7 @@ class TestFoodItem(unittest.TestCase):
             "username": "kimame123",
             "email": "kimame@gmial.com",
             "password": "Kimame1234",
-            "is_admin": 1
+            "is_admin": False
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -66,21 +72,25 @@ class TestFoodItem(unittest.TestCase):
 
         self.assertIn("token", json.loads(response.data))
 
+    def post_food_item(self):
+        """ post a new food item """
+
+        token = self.get_token()
+
+        res = self.client.post(
+            "/api/v1/fooditems",
+            data=json.dumps(self.create_data['food_data']),
+            headers={
+                'content-type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+        )
+        return res
+
     def test_create_food_item(self):
         """ Test create food item """
-        token = self.get_token()
-        create_data = {
-            "name": "njahindengu",
-            "description": "sliced",
-            "price": 47
-        }
 
-        response = self.client.post(
-            "api/v1/fooditems",
-            data=json.dumps(create_data),
-            headers={'content-type': 'application/json',
-                     "Authorization": f'Bearer {token}'}
-        )
+        response = self.post_food_item()
 
         self.assertEqual(response.status_code, 201)
 
@@ -112,6 +122,7 @@ class TestFoodItem(unittest.TestCase):
 
     def test_invalid_food_description(self):
         """ Test food description  """
+
         data = {
             "name": "ugaliskuma",
             "description": "*****123",
@@ -126,7 +137,6 @@ class TestFoodItem(unittest.TestCase):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
-
         self.assertEqual(response.status_code, 400)
 
         self.assertEqual(json.loads(response.data)[
@@ -138,10 +148,69 @@ class TestFoodItem(unittest.TestCase):
 
         token = self.get_token()
 
+        self.post_food_item()
+
         response = self.client.get(
             "api/v1/fooditems",
+            headers={"Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_customer_post_order(self):
+        """ Test for a customer to place an order  """
+
+        token = self.get_token()
+        data = {
+            "destination": "juja"
+        }
+        self.post_food_item()
+
+        res = self.client.post(
+            "/api/v1/fooditems/1/orders",
+            data=json.dumps(data),
             headers={'content-type': 'application/json',
-                     "Authorization": f'Bearer {token}'}
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        self.assertEqual(res.status_code, 201)
+
+    def test_get_specific_orders(self):
+        """ Get a specific food order"""
+        token = self.get_token()
+
+        data = {
+            "destination": "juja"
+        }
+        self.post_food_item()
+
+        res = self.client.post(
+            "/api/v1/fooditems/1/orders",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        response = self.client.get(
+            "api/v1/fooditems/orders/1",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
         )
         print(response.data)
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_food_item(self):
+        """ Test to delete a specific food item  """
+        token = self.get_token()
+
+        self.post_food_item()
+        response = self.client.delete(
+            "api/v1/fooditems/1",
+            headers={'content-type': 'application/json',
+                     "Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "item deleted sucessfully")

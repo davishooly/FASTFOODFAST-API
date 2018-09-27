@@ -3,6 +3,8 @@ import json
 
 from app import create_app
 
+from db_tests import migrate, drop
+
 
 class TestUser(unittest.TestCase):
 
@@ -11,12 +13,9 @@ class TestUser(unittest.TestCase):
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        """ Teardown """
-        self.app_context.pop()
+        with self.app.app_context():
+            drop()
+            migrate()
 
     def signup(self):
         """ signup method"""
@@ -53,12 +52,22 @@ class TestUser(unittest.TestCase):
         token = json.loads(response.data).get("token", None)
         return token
 
-    # def test_signup(self):
-    #     """ Test for signup sucessfull """
-    #     response = self.signup()
+    def test_signup(self):
+        """ Test for signup sucessfull """
+        signup_dat = {
+            "username": "kimaggme123",
+            "email": "kimggame@gmail.com",
+            "password": "Kimggame1234",
+            "is_admin": 1
+        }
+        response = self.client.post(
+            "api/v1/auth/signup",
+            data=json.dumps(signup_dat),
+            headers={'content-type': 'application/json'}
+        )
+        return response
 
-    #     print(response.data)
-    #     self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
     def test_login(self):
         """ Test for login sucessfull """
