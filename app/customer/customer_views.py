@@ -1,8 +1,10 @@
+# Module imports
 from flask_restful import Resource, reqparse
 
-from models.models import FoodOrder, FoodOrders, FoodItem
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from flask_jwt_extended import jwt_required
+# local imports
+from models.models import FoodOrder, FoodItem, User
 
 from utils import validators
 
@@ -23,36 +25,45 @@ class PostOrders(Resource):
         if not validate.valid_inputs(destination):
             return {"message": "enter valid destination"}, 400
 
-        food_item = FoodItem().get_by_id(food_id)
+        food_item = FoodItem().fetch_by_id(food_id)
+
+        current_customer = get_jwt_identity()
 
         if not food_item:
             return {"message": "Food item does not exist"}, 404
 
-        food_order = FoodOrder(food_item.name, destination)
+        food_order = FoodOrder(current_customer, food_item.name, destination)
 
-        FoodOrders.append(food_order)
+        food_order.add()
 
         return {"message": "Order placed successfully"}, 201
-
-
-class GetOrders(Resource):
-
-    @jwt_required
-    def get(self):
-        """get a list of all orders"""
-        print(FoodOrders)
-        return {"List orders": [food_order.serialize()
-                                for food_order in FoodOrders]}
 
 
 class Order(Resource):
 
     def delete(self, food_order_id):
         """ delete food order """
-        food_order = FoodOrder().get_by_id(food_order_id)
+        food_order = FoodOrder().fetch_by_id(food_order_id)
 
         if not food_order:
             return {"message": "food order does not exist"}, 404
-        else:
-            FoodOrders.remove(food_order)
-            return {"message": "order deleted sucessfully"}, 200
+
+        food_order.delete(food_order_id)
+        return {"message": "order deleted sucessfully"}, 200
+
+
+class CustomersOrderHistory(Resource):
+
+    @jwt_required
+    def get(self):
+        """ get customers order history """
+
+        current_customer = get_jwt_identity()
+
+        customer_orders = FoodOrder().orders_by_requester(current_customer)
+
+        print(customer_orders)
+
+        if customer_orders:
+            return {"order history": [customer_order.serialize() for customer_order in customer_orders]}, 200
+        return {"message": "order history empty"}, 404
