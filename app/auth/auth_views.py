@@ -25,8 +25,6 @@ class SignUp(Resource):
                         help="This field can not be left bank")
     parser.add_argument("password", type=str, required=True,
                         help="This field can not be left bank")
-    parser.add_argument('is_admin', type=bool, required=True,
-                        help='This field cannot be left blank')
 
     def post(self):
         """ Create a new user"""
@@ -35,7 +33,6 @@ class SignUp(Resource):
         username = data["username"]
         email = data["email"]
         password = data["password"]
-        is_admin = data["is_admin"]
 
         validate = validators.Validators()
 
@@ -56,7 +53,7 @@ class SignUp(Resource):
         if User().fetch_by_email(email):
             return {"message": "user with {} already exists".format(email)}, 400
 
-        user = User(username, email, password, is_admin)
+        user = User(username, email, password)
 
         user.add()
 
