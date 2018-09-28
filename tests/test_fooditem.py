@@ -3,7 +3,7 @@ import json
 
 from app import create_app
 
-from db_tests import migrate, drop
+from db_tests import migrate, drop, create_admin
 
 
 class TestFoodItem(unittest.TestCase):
@@ -23,14 +23,14 @@ class TestFoodItem(unittest.TestCase):
         with self.app.app_context():
             drop()
             migrate()
+            create_admin()
 
     def signup(self):
         """ signup function """
         signup_data = {
             "username": "kimame123",
             "email": "kimame@gmial.com",
-            "password": "Kimame1234",
-            "is_admin": False
+            "password": "Kimame1234"
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -53,11 +53,45 @@ class TestFoodItem(unittest.TestCase):
         )
         return response
 
+    def login_admin(self):
+        """ method to login admin """
+
+        data = {
+            "username": "kimamedave",
+            "password": "Kindlypass1"
+        }
+
+        response = self.client.post(
+            "api/v1/auth/login",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json'}
+        )
+
+        return response
+
+    def test_login_as_admin(self):
+        """ Test to login in admin """
+
+        response = self.login_admin()
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "successfully logged")
+
     def get_token(self):
         """get token """
         self.signup()
 
         response = self.login()
+
+        token = json.loads(response.data).get("token", None)
+        return token
+
+    def get_token_as_admin(self):
+        """get token """
+
+        response = self.login_admin()
 
         token = json.loads(response.data).get("token", None)
         return token
@@ -73,9 +107,9 @@ class TestFoodItem(unittest.TestCase):
         self.assertIn("token", json.loads(response.data))
 
     def post_food_item(self):
-        """ post a new food item """
+        """ method to post new food item """
 
-        token = self.get_token()
+        token = self.get_token_as_admin()
 
         res = self.client.post(
             "/api/v1/fooditems",
@@ -105,7 +139,7 @@ class TestFoodItem(unittest.TestCase):
             "price": 47
         }
 
-        token = self.get_token()
+        token = self.get_token_as_admin()
 
         response = self.client.post(
             "api/v1/fooditems",
@@ -120,6 +154,28 @@ class TestFoodItem(unittest.TestCase):
                          "message"], "foodname must contain alphanumeric"
                          " characters only")
 
+    def test_upadte_food_item(self):
+        """ test to update a specific food item """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_item()
+
+        update_data = {
+            "name": "njiva",
+            "description": "sweet and cool",
+            "price": 190
+        }
+
+        response = self.client.put(
+            "api/v1/fooditems/1",
+            data=json.dumps(update_data),
+            headers={'content-type': 'application/json',
+                     "Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
     def test_invalid_food_description(self):
         """ Test food description  """
 
@@ -129,7 +185,7 @@ class TestFoodItem(unittest.TestCase):
             "price": 47
         }
 
-        token = self.get_token()
+        token = self.get_token_as_admin()
 
         response = self.client.post(
             "api/v1/fooditems",
@@ -137,6 +193,7 @@ class TestFoodItem(unittest.TestCase):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
+        print(response.data)
         self.assertEqual(response.status_code, 400)
 
         self.assertEqual(json.loads(response.data)[
@@ -201,7 +258,7 @@ class TestFoodItem(unittest.TestCase):
 
     def test_delete_food_item(self):
         """ Test to delete a specific food item  """
-        token = self.get_token()
+        token = self.get_token_as_admin()
 
         self.post_food_item()
         response = self.client.delete(

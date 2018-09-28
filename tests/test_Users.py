@@ -3,7 +3,7 @@ import json
 
 from app import create_app
 
-from db_tests import migrate, drop
+from db_tests import migrate, drop, create_admin
 
 
 class TestUser(unittest.TestCase):
@@ -16,6 +16,7 @@ class TestUser(unittest.TestCase):
         with self.app.app_context():
             drop()
             migrate()
+            create_admin()
 
     def signup(self):
         """ signup method"""
@@ -23,7 +24,6 @@ class TestUser(unittest.TestCase):
             "username": "kimame123",
             "email": "kimame@gmail.com",
             "password": "Kimame1234",
-            "is_admin": 1
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -43,6 +43,22 @@ class TestUser(unittest.TestCase):
             data=json.dumps(login_data),
             headers={'content-type': 'application/json'}
         )
+        return response
+
+    def login_admin(self):
+        """ method to login admin """
+
+        data = {
+            "username": "kimamedave",
+            "password": "Kindlypass1"
+        }
+
+        response = self.client.post(
+            "api/v1/auth/login",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json'}
+        )
+
         return response
 
     def get_token(self):
@@ -73,6 +89,16 @@ class TestUser(unittest.TestCase):
         """ Test for login sucessfull """
         self.signup()
         response = self.login()
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "successfully logged")
+
+    def test_login_as_admin(self):
+        """ Test to login in admin """
+
+        response = self.login_admin()
 
         self.assertEqual(response.status_code, 200)
 

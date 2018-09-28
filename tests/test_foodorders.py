@@ -3,7 +3,7 @@ import json
 
 from app import create_app
 
-from db_tests import migrate, drop
+from db_tests import migrate, drop, create_admin
 
 
 class TestFoodOrder(unittest.TestCase):
@@ -13,9 +13,17 @@ class TestFoodOrder(unittest.TestCase):
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
+        self.create_data = {
+            "food_data": {
+                "name": "njahindengu",
+                "description": "sliced",
+                "price": 47
+            }
+        }
         with self.app.app_context():
             drop()
             migrate()
+            create_admin()
 
     def signup(self):
         """ signup function """
@@ -23,8 +31,7 @@ class TestFoodOrder(unittest.TestCase):
         signup_data = {
             "username": "kimame123",
             "email": "kimame@gmial.com",
-            "password": "Kimame1234",
-            "is_admin": False
+            "password": "Kimame1234"
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -48,6 +55,30 @@ class TestFoodOrder(unittest.TestCase):
         )
         return response
 
+    def login_admin(self):
+        """ method to login admin """
+
+        data = {
+            "username": "kimamedave",
+            "password": "Kindlypass1"
+        }
+
+        response = self.client.post(
+            "api/v1/auth/login",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json'}
+        )
+
+        return response
+
+    def get_token_as_admin(self):
+        """get token """
+
+        response = self.login_admin()
+
+        token = json.loads(response.data).get("token", None)
+        return token
+
     def get_token(self):
         """get token """
 
@@ -60,6 +91,40 @@ class TestFoodOrder(unittest.TestCase):
 
         self.assertEqual(json.loads(res.data)[
                          'message'], "Order placed successfully")
+
+    def post_food_item(self):
+        """ method to post new food item """
+
+        token = self.get_token_as_admin()
+
+        res = self.client.post(
+            "/api/v1/fooditems",
+            data=json.dumps(self.create_data['food_data']),
+            headers={
+                'content-type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+        )
+        return res
+
+    def post_food_order(self):
+        """ method to post new food item """
+
+        token = self.get_token()
+
+        data = {
+            "destination": "juja"
+        }
+        self.post_food_item()
+
+        res = self.client.post(
+            "/api/v1/fooditems/1/orders",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        return res
 
     def test_fooditem_does_not_exist(self):
         """ Test food item does not exist """
@@ -138,3 +203,48 @@ class TestFoodOrder(unittest.TestCase):
         self.assertEqual(json.loads(response.data)[
                          'message'], "status must contain alphanumeric"
                          " characters only")
+
+    def test_accept_order(self):
+        """ test to accept order """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_order()
+
+        response = self.client.put(
+            "api/v1/fooditems/orders/1/accept",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all_completed_food_order(self):
+        """ test get all completed food orders """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_order()
+
+        response = self.client.get(
+            "api/v1/fooditems/accepted/orders",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_reject_order(self):
+        """ test to accept order """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_order()
+
+        response = self.client.put(
+            "api/v1/fooditems/orders/1/reject",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 200)
