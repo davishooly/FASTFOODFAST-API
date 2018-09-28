@@ -11,7 +11,7 @@ from models.models import FoodItem, FoodOrder, User
 from utils import validators
 
 
-def admin_access(f):
+def admin_only(f):
     ''' Restrict access if not admin '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
@@ -34,7 +34,7 @@ class Foods(Resource):
                         help="This field can not be left bank")
 
     @jwt_required
-    # @admin_access
+    @admin_only
     def post(self):
         """ create a new food item"""
         data = Foods.parser.parse_args()
@@ -77,6 +77,7 @@ class Foods(Resource):
 class SpecificFoodItem(Resource):
 
     @jwt_required
+    @admin_only
     def delete(self, food_item_id):
         """ delete food item """
         food_item = FoodItem().fetch_by_id(food_item_id)
@@ -109,6 +110,7 @@ class SpecificFoodItem(Resource):
         if FoodItem().fetch_by_id(food_item_id):
             food_item = FoodItem(name, description, price)
             food_item.update(food_item_id)
+            return {"message": "food item update sucessfully"}, 200
 
         return {"message": "food item does not exist"}, 404
 
@@ -116,7 +118,7 @@ class SpecificFoodItem(Resource):
 class GetOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def get(self):
         """get a list of all orders"""
         orders = FoodOrder().fetch_all_orders()
@@ -167,7 +169,7 @@ class SpecificOrder(Resource):
 class AcceptFoodOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def put(self, order_id):
         """ Update status of a specific order to accepted"""
 
@@ -187,7 +189,7 @@ class AcceptFoodOrders(Resource):
 class AcceptedOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def get(self):
         """ get all accepted food orders """
 
@@ -202,7 +204,7 @@ class AcceptedOrders(Resource):
 class RejectFoodOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def put(self, order_id):
         """ update status of a specific order to decline """
         pass
@@ -222,7 +224,7 @@ class RejectFoodOrders(Resource):
 class RejectedOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def get(self):
         """ get all rejected food orders """
 
@@ -237,7 +239,7 @@ class RejectedOrders(Resource):
 class CompleteFoodOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def put(self, order_id):
         """ update status of a specific order to completed """
         pass
@@ -247,8 +249,14 @@ class CompleteFoodOrders(Resource):
         if not order:
             return {"message": "order does not exist"}, 404
 
-        if order.status != 'PENDING' and order.status != 'accepted':
+        if order.status == 'completed':
             return {"message": "order already {}".format(order.status)}, 403
+
+        if order.status == 'rejected':
+            return {"messge": "rejected order cannot be completed"}, 403
+
+        if order.status == 'PENDING':
+            return {"message": "accept order fast before completing the order"}, 403
 
         FoodOrder().update_accepted_order_to_completed(order_id)
         return {"messge": "order completed sucessfully"}, 200
@@ -257,7 +265,7 @@ class CompleteFoodOrders(Resource):
 class CompletedOrders(Resource):
 
     @jwt_required
-    # @admin_only
+    @admin_only
     def get(self):
         """ get all completed food orders """
 
