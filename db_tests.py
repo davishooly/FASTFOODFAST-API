@@ -23,3 +23,10 @@ def drop():
     User().drop()
     FoodItem().drop()
     FoodOrder().drop()
+
+
+def create_admin():
+    """ add admin """
+    user = User(username='kimamedave', email='kimdave@gmail.com',
+                password='Kindlypass1', is_admin=True)
+    user.add()
