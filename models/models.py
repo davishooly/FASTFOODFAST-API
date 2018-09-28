@@ -135,7 +135,7 @@ class FoodItem(DataStore):
         """ update an existing food item """
 
         self.cur.execute(
-            """ UPDATE FROM  SET name=%s, description =%s, price=%s WHERE id = %s """, (
+            """ UPDATE fooditems SET name =%s, description =%s, price=%s WHERE id = %s """, (
                 self.name, self.description, self.price, food_id)
         )
         self.save()
@@ -340,7 +340,7 @@ class FoodOrder(DataStore):
 
 class User(DataStore):
 
-    def __init__(self,  username=None, email=None, password=None, is_admin=None):
+    def __init__(self,  username=None, email=None, password=None, is_admin=False):
         super().__init__()
         self.username = username
         self.email = email
