@@ -5,7 +5,7 @@ from flask_restful import Api
 
 # local imports
 from instance.config import app_config
-from .admin.admin_views import Foods, SpecificOrder, SpecificFoodItem, AcceptFoodOrders, AcceptedOrders, RejectFoodOrders, RejectedOrders, CompletedOrders, CompleteFoodOrders, GetOrders
+from .admin.admin_views import Foods, SpecificOrder, SpecificFoodItem, AcceptFoodOrders, AcceptedOrders, RejectFoodOrders, RejectedOrders, CompletedOrders, CompleteFoodOrders, GetOrders, OrderHistoryForSpecificUser
 from .customer.customer_views import PostOrders, Order, CustomersOrderHistory
 
 from .auth.auth_views import SignUp, Login
@@ -52,6 +52,7 @@ def create_app(config_mode):
     admin.add_resource(
         CompletedOrders, '/fooditems/completed/orders')
     admin.add_resource(GetOrders, '/fooditems/orders')
+    admin.add_resource(OrderHistoryForSpecificUser, '/orders/<username>')
 
     auth.add_resource(SignUp, '/signup')
     auth.add_resource(Login, '/login')
