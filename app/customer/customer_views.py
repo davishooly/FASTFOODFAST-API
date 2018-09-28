@@ -62,8 +62,6 @@ class CustomersOrderHistory(Resource):
 
         customer_orders = FoodOrder().orders_by_requester(current_customer)
 
-        print(customer_orders)
-
         if customer_orders:
             return {"order history": [customer_order.serialize() for customer_order in customer_orders]}, 200
         return {"message": "order history empty"}, 404
