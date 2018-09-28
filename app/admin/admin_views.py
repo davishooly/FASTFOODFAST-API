@@ -275,3 +275,17 @@ class CompletedOrders(Resource):
             return {"message": "no completed orders currently"}, 404
 
         return {"orders": [completed_order.serialize() for completed_order in completed_orders]}, 200
+
+
+class OrderHistoryForSpecificUser(Resource):
+    @jwt_required
+    def get(self, username):
+        """ get order history of a specific user """
+
+        user = User().fetch_by_username(username)
+
+        if not user:
+            return {"message": "User does not exist"}, 404
+
+        user_orders = FoodOrder().orders_by_requester(user.username)
+        return {"message": [order.serialize() for order in user_orders]}, 200
