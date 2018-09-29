@@ -90,7 +90,7 @@ class Login(Resource):
             return {'message': 'user not found'}, 404
 
         if not check_password_hash(user.password_hash, password):
-            return {'message': 'incorrect password'}
+            return {'message': 'incorrect password'}, 401
 
         expires = datetime.timedelta(minutes=30)
         token = create_access_token(user.username, expires_delta=expires)

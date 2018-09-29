@@ -23,7 +23,7 @@ class TestUser(unittest.TestCase):
         signup_data = {
             "username": "kimame123",
             "email": "kimame@gmail.com",
-            "password": "Kimame1234",
+            "password": "Kimame1234"
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -73,8 +73,7 @@ class TestUser(unittest.TestCase):
         signup_dat = {
             "username": "kimaggme123",
             "email": "kimggame@gmail.com",
-            "password": "Kimggame1234",
-            "is_admin": 1
+            "password": "Kimggame1234"
         }
         response = self.client.post(
             "api/v1/auth/signup",
@@ -105,13 +104,29 @@ class TestUser(unittest.TestCase):
         self.assertEqual(json.loads(response.data)[
                          "message"], "successfully logged")
 
+    def test_incorect_password(self):
+        """ test for incorect password """
+        self.signup()
+
+        data = {
+            "username": "kimame123",
+            "password": "Kimame123"
+        }
+
+        response = self.client.post(
+            "api/v1/auth/login",
+            data=json.dumps(data),
+            headers={'content-type': 'application/json'}
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 401)
+
     def test_email_exists(self):
         """ Test signup with an existing email """
         data = {
             "username": "daviskk",
             "email": "kimame@gmail.com",
-            "password": "Kwemoi12",
-            "is_admin": 1
+            "password": "Kwemoi12"
         }
         self.signup()
 
@@ -131,8 +146,7 @@ class TestUser(unittest.TestCase):
         data = {
             "username": "kimame123",
             "email": "kwemoi@gmial.com",
-            "password": "Kwemoi12",
-            "is_admin": 1
+            "password": "Kwemoi12"
         }
 
         self.signup()
@@ -216,8 +230,7 @@ class TestUser(unittest.TestCase):
         data = {
             "username": "mwanzia",
             "email": "mwanzia@gmail.com",
-            "password": "aimame123",
-            "is_admin": 1
+            "password": "aimame123"
         }
 
         response = self.client.post(

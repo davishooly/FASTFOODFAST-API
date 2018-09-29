@@ -279,6 +279,7 @@ class CompletedOrders(Resource):
 
 class OrderHistoryForSpecificUser(Resource):
     @jwt_required
+    @admin_only
     def get(self, username):
         """ get order history of a specific user """
 

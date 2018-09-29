@@ -216,22 +216,28 @@ class TestFoodOrder(unittest.TestCase):
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
-        print(response.data)
+
         self.assertEqual(response.status_code, 200)
 
-    def test_get_all_completed_food_order(self):
-        """ test get all completed food orders """
+    def test_get_all_accepted_food_order(self):
+        """ test get all accept food orders """
 
         token = self.get_token_as_admin()
 
         self.post_food_order()
+
+        resp = self.client.put(
+            "api/v1/fooditems/orders/1/accept",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
 
         response = self.client.get(
             "api/v1/fooditems/accepted/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
-        print(response.data)
+
         self.assertEqual(response.status_code, 200)
 
     def test_reject_order(self):
@@ -247,4 +253,83 @@ class TestFoodOrder(unittest.TestCase):
                      'Authorization': f'Bearer {token}'}
         )
         print(response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all_rejected_food_order(self):
+        """ test get all rejected food orders """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_order()
+
+        resp = self.client.put(
+            "api/v1/fooditems/orders/1/reject",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        response = self.client.get(
+            "api/v1/fooditems/rejected/orders",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_customer_order_history(self):
+        """ get all customers order history """
+
+        token = self.get_token()
+
+        self.post_food_order()
+
+        response = self.client.get(
+            "api/v1/fooditems/orders/orderhistory",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_order_history_doesnot_exist(self):
+        """ test user order history does not exist """
+
+        token = self.get_token()
+
+        response = self.client.get(
+            "api/v1/fooditems/orders/orderhistory",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_admin_get_specific_user_order_history(self):
+        """ test get order history of a specific user """
+
+        token = self.get_token_as_admin()
+
+        self.post_food_order()
+
+        response = self.client.get(
+            "api/v1/orders/kimame123",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_food_order(self):
+        """ test for customer to delete his/her food order """
+
+        token = self.get_token()
+
+        res = self.post_food_order()
+
+        response = self.client.delete(
+            "api/v1/fooditems/orders/1",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
         self.assertEqual(response.status_code, 200)
