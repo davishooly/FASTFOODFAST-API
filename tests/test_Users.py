@@ -70,14 +70,14 @@ class TestUser(unittest.TestCase):
 
     def test_signup(self):
         """ Test for signup sucessfull """
-        signup_dat = {
+        signup_data = {
             "username": "kimaggme123",
             "email": "kimggame@gmail.com",
             "password": "Kimggame1234"
         }
         response = self.client.post(
             "api/v1/auth/signup",
-            data=json.dumps(signup_dat),
+            data=json.dumps(signup_data),
             headers={'content-type': 'application/json'}
         )
         return response
@@ -93,6 +93,22 @@ class TestUser(unittest.TestCase):
 
         self.assertEqual(json.loads(response.data)[
                          "message"], "successfully logged")
+
+    def test_signup_as_admin(self):
+        """Test sign up as admin """
+
+        signup_admin_data = {
+            "username": 'kimamedave',
+            "email": 'kimdave@gmail.com',
+            "password": 'Kindlypass1',
+            "is_admin": True
+        }
+
+        response = self.client.post(
+            "api/v1/auth/signup",
+            data=json.dumps(signup_admin_data),
+            headers={'content-type': 'application/json'}
+        )
 
     def test_login_as_admin(self):
         """ Test to login in admin """

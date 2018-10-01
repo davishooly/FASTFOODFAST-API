@@ -154,7 +154,7 @@ class TestFoodItem(unittest.TestCase):
                          "message"], "foodname must contain alphanumeric"
                          " characters only")
 
-    def test_upadte_food_item(self):
+    def test_update_food_item(self):
         """ test to update a specific food item """
 
         token = self.get_token_as_admin()
@@ -175,6 +175,26 @@ class TestFoodItem(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+
+    def test_update_non_existing_food_item(self):
+        """ test to update non existing food item """
+
+        token = self.get_token_as_admin()
+
+        update_data = {
+            "name": "njiva",
+            "description": "sweet and cool",
+            "price": 190
+        }
+
+        response = self.client.put(
+            "api/v1/fooditems/1",
+            data=json.dumps(update_data),
+            headers={'content-type': 'application/json',
+                     "Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 404)
 
     def test_invalid_food_description(self):
         """ Test food description  """
@@ -204,6 +224,20 @@ class TestFoodItem(unittest.TestCase):
         """ Test all food items """
 
         token = self.get_token()
+
+        self.post_food_item()
+
+        response = self.client.get(
+            "api/v1/fooditems",
+            headers={"Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all_fooditems_as_admin(self):
+        """ Test all food items """
+
+        token = self.get_token_as_admin()
 
         self.post_food_item()
 
@@ -253,10 +287,10 @@ class TestFoodItem(unittest.TestCase):
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
-        print(response.data)
+
         self.assertEqual(response.status_code, 200)
 
-    def test_delete_food_item(self):
+    def test_delete_food_item_as_admin(self):
         """ Test to delete a specific food item  """
         token = self.get_token_as_admin()
 
@@ -271,3 +305,18 @@ class TestFoodItem(unittest.TestCase):
 
         self.assertEqual(json.loads(response.data)[
                          "message"], "item deleted sucessfully")
+
+    def test_delete_non_existing_food_item_as_admin(self):
+        """ Test to delete non existing food item  """
+        token = self.get_token_as_admin()
+
+        response = self.client.delete(
+            "api/v1/fooditems/1",
+            headers={'content-type': 'application/json',
+                     "Authorization": f'Bearer {token}'}
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "food item does not exist")

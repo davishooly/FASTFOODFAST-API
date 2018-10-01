@@ -12,7 +12,6 @@ app = create_app(os.getenv("APP_SETTINGS") or "default")
 @app.cli.command()
 def migrate():
     """ create tables """
-
     User().create()
     FoodItem().create()
     FoodOrder().create()
@@ -21,7 +20,6 @@ def migrate():
 @app.cli.command()
 def drop():
     """ drop tables if they exist """
-
     User().drop()
     FoodItem().drop()
     FoodOrder().drop()
