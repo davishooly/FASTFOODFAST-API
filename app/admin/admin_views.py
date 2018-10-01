@@ -271,7 +271,7 @@ class CompletedOrders(Resource):
 
         completed_orders = FoodOrder().fetch_all_completed_orders()
 
-        print(completed_orders)
+        # print(completed_orders)
 
         if not completed_orders:
             return {"message": "no completed orders currently"}, 404
