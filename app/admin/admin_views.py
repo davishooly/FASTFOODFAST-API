@@ -179,7 +179,7 @@ class AcceptFoodOrders(Resource):
             return {"message": "order does not exist"}, 404
 
         if order.status != 'PENDING':
-            return {'message': 'order already {}'.format(order.status)}
+            return {'message': 'order already {}'.format(order.status)}, 403
 
         FoodOrder().accept_order(order_id)
         print(order.status)
@@ -270,6 +270,8 @@ class CompletedOrders(Resource):
         """ get all completed food orders """
 
         completed_orders = FoodOrder().fetch_all_completed_orders()
+
+        print(completed_orders)
 
         if not completed_orders:
             return {"message": "no completed orders currently"}, 404
