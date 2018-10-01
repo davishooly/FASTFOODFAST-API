@@ -228,18 +228,6 @@ class FoodOrder(DataStore):
             return [self.map_foodorder(order) for order in orders]
         return None
 
-    def map_foodorder(self, data):
-        """ map food order to an object"""
-
-        food_order = FoodOrder(
-            order_by=data[1], by_name=data[2], destination=data[3])
-        food_order.id = data[0]
-        food_order.date = data[4]
-        food_order.status = data[5]
-        self = food_order
-
-        return self
-
     def orders_by_requester(self, requester):
         """ get all orders made by the requester """
 
@@ -325,9 +313,10 @@ class FoodOrder(DataStore):
         """ fetch all completed orders """
 
         self.cur.execute(
-            """ SELECT FROM foodorder WHERE status = %s""", ('completed',))
+            """ SELECT * FROM foodorder WHERE status = %s""", ('completed',))
 
         completed_orders = self.cur.fetchall()
+        print(completed_orders)
 
         self.save()
         self.close()
@@ -337,6 +326,17 @@ class FoodOrder(DataStore):
         if completed_orders:
             return [self.map_foodorder(completed_order) for completed_order in completed_orders]
         return None
+
+    def map_foodorder(self, data):
+        """ map food order to an object"""
+        food_order = FoodOrder(
+            order_by=data[1], by_name=data[2], destination=data[3])
+        food_order.id = data[0]
+        food_order.date = data[4]
+        food_order.status = data[5]
+        self = food_order
+
+        return self
 
 
 class User(DataStore):
