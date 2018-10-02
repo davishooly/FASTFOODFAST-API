@@ -129,7 +129,7 @@ class BaseTest(unittest.TestCase):
         return res
 
     def signup(self):
-        """ signup function """
+        """ user signup function """
         response = self.client.post(
             "api/v2/auth/signup",
             data=json.dumps(self.user_signup_data),
@@ -139,7 +139,6 @@ class BaseTest(unittest.TestCase):
 
     def login(self):
         """ login function """
-
         response = self.client.post(
             "api/v2/auth/login",
             data=json.dumps(self.user_login_data),
