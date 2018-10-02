@@ -26,7 +26,7 @@ class TestUser(unittest.TestCase):
             "password": "Kimame1234"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(signup_data),
             headers={'content-type': 'application/json'}
         )
@@ -39,7 +39,7 @@ class TestUser(unittest.TestCase):
             "password": "Kimame1234"
         }
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(login_data),
             headers={'content-type': 'application/json'}
         )
@@ -54,7 +54,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -76,7 +76,7 @@ class TestUser(unittest.TestCase):
             "password": "Kimggame1234"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(signup_data),
             headers={'content-type': 'application/json'}
         )
@@ -105,7 +105,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(signup_admin_data),
             headers={'content-type': 'application/json'}
         )
@@ -130,7 +130,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -147,7 +147,7 @@ class TestUser(unittest.TestCase):
         self.signup()
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -168,7 +168,7 @@ class TestUser(unittest.TestCase):
         self.signup()
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -188,7 +188,7 @@ class TestUser(unittest.TestCase):
         self.signup()
 
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -208,7 +208,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -230,7 +230,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -250,7 +250,7 @@ class TestUser(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )

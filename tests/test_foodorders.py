@@ -34,7 +34,7 @@ class TestFoodOrder(unittest.TestCase):
             "password": "Kimame1234"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(signup_data),
             headers={'content-type': 'application/json'}
         )
@@ -49,7 +49,7 @@ class TestFoodOrder(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(login_data),
             headers={'content-type': 'application/json'}
         )
@@ -64,7 +64,7 @@ class TestFoodOrder(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/login",
+            "api/v2/auth/login",
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
@@ -98,7 +98,7 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token_as_admin()
 
         res = self.client.post(
-            "/api/v1/fooditems",
+            "/api/v2/menu",
             data=json.dumps(self.create_data['food_data']),
             headers={
                 'content-type': 'application/json',
@@ -118,7 +118,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_item()
 
         res = self.client.post(
-            "/api/v1/fooditems/1/orders",
+            "/api/v2/menu/1/orders",
             data=json.dumps(data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
@@ -136,7 +136,7 @@ class TestFoodOrder(unittest.TestCase):
         }
 
         response = self.client.post(
-            "/api/v1/fooditems/100/orders",
+            "/api/v2/menu/100/orders",
             data=json.dumps(data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
@@ -157,7 +157,7 @@ class TestFoodOrder(unittest.TestCase):
         }
 
         response = self.client.post(
-            "/api/v1/fooditems/1/orders",
+            "/api/v2/menu/1/orders",
             data=json.dumps(data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
@@ -173,7 +173,7 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token()
 
         response = self.client.get(
-            "api/v1/fooditems/orders/100",
+            "api/v2/menu/orders/100",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -193,7 +193,7 @@ class TestFoodOrder(unittest.TestCase):
         }
 
         response = self.client.put(
-            "api/v1/fooditems/orders/1",
+            "api/v2/orders/1",
             data=json.dumps(status_data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
@@ -212,7 +212,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         response = self.client.put(
-            "api/v1/fooditems/orders/1/accept",
+            "api/v2/orders/1/accept",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -227,13 +227,13 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         res = self.client.put(
-            "api/v1/fooditems/orders/1/accept",
+            "api/v2/orders/1/accept",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
         response = self.client.put(
-            "api/v1/fooditems/orders/1/accept",
+            "api/v2/orders/1/accept",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -248,13 +248,13 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         resp = self.client.put(
-            "api/v1/fooditems/orders/1/accept",
+            "api/v2/orders/1/accept",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
         response = self.client.get(
-            "api/v1/fooditems/accepted/orders",
+            "api/v2/accepted/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -267,7 +267,7 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token_as_admin()
 
         response = self.client.get(
-            "api/v1/fooditems/accepted/orders",
+            "api/v2/accepted/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -282,7 +282,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         response = self.client.put(
-            "api/v1/fooditems/orders/1/reject",
+            "api/v2/orders/1/reject",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -297,13 +297,13 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         res = self.client.put(
-            "api/v1/fooditems/orders/1/reject",
+            "api/v2/orders/1/reject",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
         response = self.client.put(
-            "api/v1/fooditems/orders/1/reject",
+            "api/v2/orders/1/reject",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -318,13 +318,13 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         resp = self.client.put(
-            "api/v1/fooditems/orders/1/reject",
+            "api/v2/orders/1/reject",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
         response = self.client.get(
-            "api/v1/fooditems/rejected/orders",
+            "api/v2/rejected/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -337,7 +337,7 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token_as_admin()
 
         response = self.client.get(
-            "api/v1/fooditems/rejected/orders",
+            "api/v2/rejected/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -352,12 +352,12 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         resp = self.client.put(
-            "api/v1/fooditems/orders/1/accept",
+            "api/v2/orders/1/accept",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
         response = self.client.put(
-            "api/v1/fooditems/orders/1/complete",
+            "api/v2/orders/1/complete",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -406,7 +406,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         response = self.client.get(
-            "api/v1/fooditems/orders/orderhistory",
+            "api/v2/menu/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -419,7 +419,7 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token()
 
         response = self.client.get(
-            "api/v1/fooditems/orders/orderhistory",
+            "api/v2/users/orders",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -434,7 +434,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         response = self.client.get(
-            "api/v1/orders/kimame123",
+            "api/v2/orders/kimame123",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -449,7 +449,7 @@ class TestFoodOrder(unittest.TestCase):
         self.post_food_order()
 
         response = self.client.get(
-            "api/v1/orders/kimame",
+            "api/v2/orders/kimame",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -464,7 +464,7 @@ class TestFoodOrder(unittest.TestCase):
         res = self.post_food_order()
 
         response = self.client.delete(
-            "api/v1/fooditems/orders/1",
+            "api/v2/menu/orders/1",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
