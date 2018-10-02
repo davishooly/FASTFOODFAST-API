@@ -63,7 +63,6 @@ class Foods(Resource):
 
         return {"message": "Food item created successfully"}, 201
 
-    @jwt_required
     def get(self):
         """ Get all food items"""
         fooditems = FoodItem().fetch_all_fooditems()
