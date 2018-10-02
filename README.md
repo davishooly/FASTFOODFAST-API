@@ -59,16 +59,16 @@ $ flask run
 
 | Method | Endpoint                        | Description                           |
 | ------ | ------------------------------- | ------------------------------------- |
-| POST   | /api/v1/auth/signup             | sign up a user                        |
-| POST   | /api/v1/auth/login              | login a user                          |
-| POST   | /api/v1/fooditems               | post a fooditem                       |
-| GET    | /api/v1/fooditems               | get all available fooditems           |
-| POST   | /api/v1/fooditems/<{id}>/orders | post an order of a specific food item |
-| GET    | /api/v1/fooditems/orders        | get a list of all food orders         |
-| PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
-| GET    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
-| DELETE | /api/v1/fooditems/<{id}>        | delete a specific order               |
-| DELETE | /api/v1/fooditems/orders/<{id}> | delete a specific food order          |
+| POST   | /api/v2/auth/signup             | sign up a user                        |
+| POST   | /api/v2/auth/login              | login a user                          |
+| POST   | /api/v2/menu                    | post a fooditem                       |
+| GET    | /api/v2/menu                    | get all available fooditems           |
+| POST   | /api/v2/menu/<{id}>/orders      | post an order of a specific food item |
+| GET    | /api/v2/menu/orders             | get a list of all food orders         |
+| PUT    | /api/v2/menu/orders/<{id}>      | update on the status of an order      |
+| GET    | /api/v2/menu/orders/<{id}>      | get a specific food order             |
+| DELETE | /api/v2/menu/<{id}>             | delete a specific order               |
+| DELETE | /api/v2/menu/orders/<{id}>      | delete a specific food order          |
 
 ### Testing
 
