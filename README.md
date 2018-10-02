@@ -63,12 +63,12 @@ $ flask run
 | POST   | /api/v2/auth/login              | login a user                          |
 | POST   | /api/v2/menu                    | post a fooditem                       |
 | GET    | /api/v2/menu                    | get all available fooditems           |
-| POST   | /api/v2/menu/<{id}>/orders      | post an order of a specific food item |
-| GET    | /api/v2/menu/orders             | get a list of all food orders         |
-| PUT    | /api/v2/menu/orders/<{id}>      | update on the status of an order      |
-| GET    | /api/v2/menu/orders/<{id}>      | get a specific food order             |
-| DELETE | /api/v2/menu/<{id}>             | delete a specific order               |
-| DELETE | /api/v2/menu/orders/<{id}>      | delete a specific food order          |
+| POST   | /api/v2/users/<{id}>/orders     | post an order of a specific food item |
+| GET    | /api/v2/orders                  | get a list of all food orders         |
+| PUT    | /api/v2/orders/<{id}>           | update on the status of an order      |
+| GET    | /api/v2/orders/<{id}>           | get a specific food order             |
+| DELETE | /api/v2/order/<{id}>            | delete a specific order               |
+| DELETE | /api/v2/menu/<{id}>             | delete a specific food item           |
 
 ### Testing
 
