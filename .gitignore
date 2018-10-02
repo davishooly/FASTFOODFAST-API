@@ -3,7 +3,6 @@ __pycache__/
 .env
 .vscode/
 .coverage
-*.pyc
 
 __pycache__/
 *.py[cod]

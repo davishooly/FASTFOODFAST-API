@@ -1,166 +1,32 @@
 import unittest
 import json
 
-from app import create_app
-
-from db_tests import migrate, drop, create_admin
+from .base_test import BaseTest
 
 
-class TestFoodOrder(unittest.TestCase):
-
-    def setUp(self):
-        """ setting up testing """
-
-        self.app = create_app('testing')
-        self.client = self.app.test_client()
-        self.create_data = {
-            "food_data": {
-                "name": "njahindengu",
-                "description": "sliced",
-                "price": 47
-            }
-        }
-        with self.app.app_context():
-            drop()
-            migrate()
-            create_admin()
-
-    def signup(self):
-        """ signup function """
-
-        signup_data = {
-            "username": "kimame123",
-            "email": "kimame@gmial.com",
-            "password": "Kimame1234"
-        }
-        response = self.client.post(
-            "api/v2/auth/signup",
-            data=json.dumps(signup_data),
-            headers={'content-type': 'application/json'}
-        )
-        return response
-
-    def login(self):
-        """ login function """
-
-        login_data = {
-            "username": "kimame123",
-            "password": "Kimame1234"
-        }
-
-        response = self.client.post(
-            "api/v2/auth/login",
-            data=json.dumps(login_data),
-            headers={'content-type': 'application/json'}
-        )
-        return response
-
-    def login_admin(self):
-        """ method to login admin """
-
-        data = {
-            "username": "kimamedave",
-            "password": "Kindlypass1"
-        }
-
-        response = self.client.post(
-            "api/v2/auth/login",
-            data=json.dumps(data),
-            headers={'content-type': 'application/json'}
-        )
-
-        return response
-
-    def get_token_as_admin(self):
-        """get token """
-
-        response = self.login_admin()
-
-        token = json.loads(response.data).get("token", None)
-        return token
-
-    def get_token(self):
-        """get token """
-
-        self.signup()
-
-        response = self.login()
-
-        token = json.loads(response.data).get("token", None)
-        return token
-
-        self.assertEqual(json.loads(res.data)[
-                         'message'], "Order placed successfully")
-
-    def post_food_item(self):
-        """ method to post new food item """
-
-        token = self.get_token_as_admin()
-
-        res = self.client.post(
-            "/api/v2/menu",
-            data=json.dumps(self.create_data['food_data']),
-            headers={
-                'content-type': 'application/json',
-                'Authorization': f'Bearer {token}'
-            }
-        )
-        return res
-
-    def post_food_order(self):
-        """ method to post new food item """
-
-        token = self.get_token()
-
-        data = {
-            "destination": "juja"
-        }
-        self.post_food_item()
-
-        res = self.client.post(
-            "/api/v2/users/1/orders",
-            data=json.dumps(data),
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-
-        return res
+class TestFoodOrder(BaseTest):
 
     def test_fooditem_does_not_exist(self):
         """ Test food item does not exist """
 
-        token = self.get_token()
-
-        data = {
-            "destination": "juja"
-        }
+        token = self.get_token_as_user()
 
         response = self.client.post(
             "/api/v2/user/100/orders",
-            data=json.dumps(data),
+            data=json.dumps(self.post_order_data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
-        print(response.data)
-
         self.assertEqual(response.status_code, 404)
-
-        # self.assertEqual(json.loads(response.data)[
-        #                  'message'], "Food item does not exist")
 
     def test_invalid_destination(self):
         """ Test for an invalid destination """
 
-        token = self.get_token()
-
-        data = {
-            "destination": "********"
-        }
-
+        token = self.get_token_as_user()
         response = self.client.post(
             "/api/v2/users/1/orders",
-            data=json.dumps(data),
+            data=json.dumps(self.invalid_destination_data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
@@ -172,7 +38,7 @@ class TestFoodOrder(unittest.TestCase):
 
     def test_food_order_does_not_exist(self):
         """ Test food order does not exist """
-        token = self.get_token()
+        token = self.get_token_as_user()
 
         response = self.client.get(
             "api/v2/menu/orders/100",
@@ -182,30 +48,6 @@ class TestFoodOrder(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-        # self.assertEqual(json.loads(response.data)[
-        #                  'message'], "order does not exist")
-
-    def test_if_status_is_valid(self):
-        """ Test if status is valid """
-
-        token = self.get_token()
-
-        status_data = {
-            "status": "*****"
-        }
-
-        response = self.client.put(
-            "api/v2/orders/1",
-            data=json.dumps(status_data),
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-        self.assertEqual(response.status_code, 400)
-
-        self.assertEqual(json.loads(response.data)[
-                         'message'], "status must contain alphanumeric"
-                         " characters only")
-
     def test_accept_order(self):
         """ test to accept order """
 
@@ -213,11 +55,7 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        response = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        response = self.accept_order()
 
         self.assertEqual(response.status_code, 200)
 
@@ -228,17 +66,9 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        res = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.accept_order()
 
-        response = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        response = self.accept_order()
 
         self.assertEqual(response.status_code, 403)
 
@@ -249,11 +79,7 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        resp = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.accept_order()
 
         response = self.client.get(
             "api/v2/accepted/orders",
@@ -298,17 +124,9 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        res = self.client.put(
-            "api/v2/orders/1/reject",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.reject_order()
 
-        response = self.client.put(
-            "api/v2/orders/1/reject",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        response = self.reject_order()
 
         self.assertEqual(response.status_code, 403)
 
@@ -319,11 +137,7 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        resp = self.client.put(
-            "api/v2/orders/1/reject",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.reject_order()
 
         response = self.client.get(
             "api/v2/rejected/orders",
@@ -353,16 +167,8 @@ class TestFoodOrder(unittest.TestCase):
 
         self.post_food_order()
 
-        resp = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-        response = self.client.put(
-            "api/v2/orders/1/complete",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.accept_order()
+        response = self.complete_order()
 
         self.assertEqual(response.status_code, 200)
 
@@ -372,17 +178,8 @@ class TestFoodOrder(unittest.TestCase):
         token = self.get_token_as_admin()
         self.post_food_order()
 
-        resp = self.client.put(
-            "api/v2/orders/1/accept",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-
-        res = self.client.put(
-            "api/v2/orders/1/complete",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
+        self.accept_order()
+        self.complete_order()
 
         response = self.client.get(
             "api/v2/completed/orders",
@@ -404,25 +201,10 @@ class TestFoodOrder(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_get_customer_order_history(self):
-        """ get all customers order history """
-
-        token = self.get_token()
-
-        self.post_food_order()
-
-        response = self.client.get(
-            "api/v2/users/orders",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-
-        self.assertEqual(response.status_code, 200)
-
     def test_user_order_history_doesnot_exist(self):
         """ test user order history does not exist """
 
-        token = self.get_token()
+        token = self.get_token_as_user()
 
         response = self.client.get(
             "api/v2/users/orders",
@@ -431,21 +213,6 @@ class TestFoodOrder(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
-
-    def test_admin_get_specific_user_order_history(self):
-        """ test get order history of a specific user """
-
-        token = self.get_token_as_admin()
-
-        self.post_food_order()
-
-        response = self.client.get(
-            "api/v2/orders/kimame123",
-            headers={'content-type': 'application/json',
-                     'Authorization': f'Bearer {token}'}
-        )
-
-        self.assertEqual(response.status_code, 200)
 
     def test_admin_specific_user_order_history_does_not_exist(self):
         """ test order history of a specific user does not exist"""
@@ -465,7 +232,7 @@ class TestFoodOrder(unittest.TestCase):
     def test_delete_food_order_as_user(self):
         """ test for customer to delete his/her food order """
 
-        token = self.get_token()
+        token = self.get_token_as_user()
 
         res = self.post_food_order()
 
