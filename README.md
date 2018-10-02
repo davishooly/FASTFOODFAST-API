@@ -25,7 +25,7 @@ Fast food fast is a food delivery application.
 ## Prerequisite
 
 - [Python3.6](https://www.python.org/downloads/release/python-365/)
-- [Virtua Environment](https://virtualenv.pypa.io/en/stable/installation/)
+- [Virtual Environment](https://virtualenv.pypa.io/en/stable/installation/)
 
 # Installation and Setup
 
@@ -57,18 +57,24 @@ $ flask run
 
 ## Endpoints Available
 
-| Method | Endpoint                        | Description                           |
-| ------ | ------------------------------- | ------------------------------------- |
-| POST   | /api/v1/auth/signup             | sign up a user                        |
-| POST   | /api/v1/auth/login              | login a user                          |
-| POST   | /api/v1/fooditems               | post a fooditem                       |
-| GET    | /api/v1/fooditems               | get all available fooditems           |
-| POST   | /api/v1/fooditems/<{id}>/orders | post an order on a specific food item |
-| GET    | /api/v1/fooditems/orders        | get the all food orders               |
-| PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
-| GET    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
-| DELETE | /api/v1/fooditems/<{id}>        | delete a specific order               |
-| DELETE | /api/v1/fooditems/orders/<{id}> | delete a specific food order          |
+| Method | Endpoint                        | Description                           | Roles         |
+| ------ | ------------------------------- | ------------------------------------- | ------------  |
+| POST   | /api/v2/auth/signup             | sign up a user                        | users         |
+| POST   | /api/v2/users/<{id}>/orders     | post an order                         | users         |
+| DELETE | /api/v2/order/<{id}>            | delete a specific order               | users         |
+| POST   | /api/v2/menu                    | post a fooditem                       | Admin         |
+| GET    | /api/v2/orders                  | get orders                            | Admin         |
+| DELETE | /api/v2/menu/<{id}>             | delete a specific food item           | Admin         |
+| PUT    | /api/v2/menu/<{id}>             | update a menu                         | Admin         |
+| PUT    | /api/v2/orders/<{id}>/accept    | accept an order                       | Admin         |
+| PUT    | /api/v2/orders/<{id}>/reject    | reject an order                       | Admin         |
+| PUT    | /api/v2/orders/<{id}>/complete  | complete an order                     | Admin         |
+| GET    | /api/v2/accepted/orders         | get accepted orders                   | Admin         |
+| GET    | /api/v2/rejected/orders         | get rejected orders                   | Admin         |
+| GET    | /api/completed/orders           | get completed orders                  | Admin         |
+| POST   | /api/v2/auth/login              | login a user                          | Admin/users   |
+| GET    | /api/v2/orders/<{id}>           | get a specific food order             | Admin/users   |
+| GET    | /api/v2/menu                    | get menu                              | Admin/users   |
 
 ### Testing
 
