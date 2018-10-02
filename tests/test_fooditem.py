@@ -213,7 +213,7 @@ class TestFoodItem(unittest.TestCase):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
-        print(response.data)
+
         self.assertEqual(response.status_code, 400)
 
         self.assertEqual(json.loads(response.data)[
@@ -223,15 +223,11 @@ class TestFoodItem(unittest.TestCase):
     def test_get_all_fooditems(self):
         """ Test all food items """
 
-        token = self.get_token()
-
         self.post_food_item()
 
         response = self.client.get(
-            "api/v2/menu",
-            headers={"Authorization": f'Bearer {token}'}
+            "api/v2/menu"
         )
-
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_fooditems_as_admin(self):
@@ -242,7 +238,7 @@ class TestFoodItem(unittest.TestCase):
         self.post_food_item()
 
         response = self.client.get(
-            "api/v2/menus",
+            "api/v2/menu",
             headers={"Authorization": f'Bearer {token}'}
         )
 
@@ -252,13 +248,14 @@ class TestFoodItem(unittest.TestCase):
         """ Test for a customer to place an order  """
 
         token = self.get_token()
+
         data = {
             "destination": "juja"
         }
         self.post_food_item()
 
         res = self.client.post(
-            "/api/v2/menu/1/orders",
+            "/api/v2/users/1/orders",
             data=json.dumps(data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
@@ -276,14 +273,14 @@ class TestFoodItem(unittest.TestCase):
         self.post_food_item()
 
         res = self.client.post(
-            "/api/v2/menu/1/orders",
+            "/api/v2/users/1/orders",
             data=json.dumps(data),
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
 
         response = self.client.get(
-            "api/v2/menu/orders/1",
+            "api/v2/orders/1",
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
