@@ -2,7 +2,7 @@ language: python
 env:
   global:
     DB_TEST_HOST="localhost"
-    DB_TEST_USERNAME="fast_food_user"
+    DB_TEST_USERNAME="postgres"
     DB_TEST_PASSWORD="root"
     DB_TEST_NAME="fastfoodfast"
     SECRET_KEY = "kiameiieiihig#$%%%^(()_udavhgusk$%#%^******"
