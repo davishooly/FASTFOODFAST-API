@@ -99,8 +99,7 @@ class TestUser(BaseTest):
         self.assertEqual(response.status_code, 400)
 
         self.assertEqual(json.loads(response.data)[
-                         "message"], "username must contain"
-                         " alphanumeric characters only")
+                         "message"], "username must contain alphanumeric characters and must be more than four characters")
 
     def test_invalid_email(self):
         """ Test invalid email """
