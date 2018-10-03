@@ -27,7 +27,7 @@ def get():
 @app.route('/')
 def hello_world():
     "test that flask app is running"
-    return "To view the docs visit: http://127.0.0.1:5000/apidocs"
+    return "To view the docs visit:  https://fasty-v2.herokuapp.com/apidocs"
 
 
 if __name__ == "__main__":
