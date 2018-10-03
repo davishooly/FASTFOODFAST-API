@@ -3,6 +3,8 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
+from swagger_ui.swagger_ui import get_swaggerui_blueprint
+
 # local imports
 from instance.config import app_config
 from .admin.admin_views import Foods, SpecificOrder, SpecificFoodItem, AcceptFoodOrders, AcceptedOrders, RejectFoodOrders, RejectedOrders, CompletedOrders, CompleteFoodOrders, GetOrders, OrderHistoryForSpecificUser
@@ -22,6 +24,13 @@ def create_app(config_mode):
     app.config.from_pyfile('config.py')
 
     jwt.init_app(app)
+
+    swagger_url = "/api/v2/docs"
+    api_url = "swagger.yml"
+
+    swaggerui_blueprint = get_swaggerui_blueprint(swagger_url, api_url)
+
+    app.register_blueprint(swaggerui_blueprint, url_prefix=swagger_url)
 
     # Regestering blueprints for my views
     from .admin import admin_blueprint as admin_blp
