@@ -9,7 +9,7 @@ app = create_app(os.getenv("APP_SETTINGS") or "default")
 swagger = Swagger(app)
 
 
-app.route('api/v2/menu', methods=['GET'])
+app.route('/api/v2/menu', methods=['GET'])
 
 
 def get():
@@ -17,6 +17,7 @@ def get():
     ---
     parameters:
         - name: token
+
         in: path
         type: string
         required = True
@@ -26,7 +27,7 @@ def get():
 @app.route('/')
 def hello_world():
     "test that flask app is running"
-    return "To view the docs visit: https://fasty-v2.herokuapp.com/apidocs"
+    return "To view the docs visit: http://127.0.0.1:5000/apidocs"
 
 
 if __name__ == "__main__":
