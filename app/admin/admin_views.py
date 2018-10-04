@@ -53,9 +53,6 @@ class Foods(Resource):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
 
-        # if not validate.valid_price(price):
-        #     return {"message": "invalid price, price should be integers only"}, 400
-
         food_item = FoodItem().fetch_by_name(name)
 
         if food_item:
@@ -258,7 +255,7 @@ class CompleteFoodOrders(Resource):
             return {"messge": "rejected order cannot be completed"}, 403
 
         if order.status == 'PENDING':
-            return {"message": f"accept order fast before completing the order, order is {order.status}"}, 403
+            return {"message": "accept order fast before completing the order, order is {}".format(order.status)}, 403
 
         FoodOrder().update_accepted_order_to_completed(order_id)
         return {"messge": "order completed sucessfully"}, 200

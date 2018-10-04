@@ -5,7 +5,7 @@ import re
 class Validators:
     def valid_name(self, username):
         """ Valid username """
-        return re.match("^[a-zA-Z0-9]+$", username)
+        return re.match("^[a-zA-Z]+$", username)
 
     def valid_password(self, password):
         """validate for password """
@@ -20,7 +20,3 @@ class Validators:
     def valid_inputs(self, string_inputs):
         """ validate for inputs """
         return re.match("^[a-zA-Z0-9-\._@]+$", string_inputs)
-
-    def valid_price(self, price):
-        """ validate price """
-        return re.match("^[0-9]{3,6}$", price)

@@ -1,5 +1,5 @@
 # module imports
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
@@ -25,7 +25,7 @@ def create_app(config_mode):
 
     jwt.init_app(app)
 
-    swagger_url = "/api/v2/docs"
+    swagger_url = "https://fasty-v2.herokuapp.com/api/v2/doc"
     api_url = "swagger.yml"
 
     swaggerui_blueprint = get_swaggerui_blueprint(swagger_url, api_url)
@@ -46,6 +46,7 @@ def create_app(config_mode):
     app.register_blueprint(customer_blp, url_prefix="/api/v2")
 
     # Routes
+
     admin.add_resource(Foods, '/menu')
     admin.add_resource(SpecificFoodItem, '/menu/<int:food_item_id>')
     admin.add_resource(SpecificOrder, '/orders/<int:order_id>')
