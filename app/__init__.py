@@ -25,7 +25,7 @@ def create_app(config_mode):
 
     jwt.init_app(app)
 
-    swagger_url = "/"
+    swagger_url = "/docs"
     api_url = "swagger.yml"
 
     swaggerui_blueprint = get_swaggerui_blueprint(swagger_url, api_url)
