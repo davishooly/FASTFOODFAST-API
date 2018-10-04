@@ -25,8 +25,8 @@ produces:
 paths:
   /auth/signup:
     post:
-      summary: Register a new user
-      operationId: registerUser
+      summary: Create a new user
+      operationId: createUser
       parameters:
         - name: body
           in: body
@@ -49,7 +49,7 @@ paths:
 
   /auth/login:
     post:
-      summary: Register a new user
+      summary: Login user
       operationId: registerUser
       parameters:
         - name: body
@@ -75,8 +75,8 @@ paths:
 
   /orders:
     get:
-      summary: Fetch all registered users
-      operationId: getUsers
+      summary: Fetch all orders
+      operationId: getOrders
       responses:
         200:
           description: ok
@@ -91,12 +91,12 @@ paths:
         500:
           description: internal server error
       tags:
-        - Users
+        - orders
 
-  /users/{user_id}:
+  /orders/{user_id}:
     get:
-      summary: Get a single user by id
-      operationId: getUser
+      summary: Get a single order by id
+      operationId: getorder
       parameters:
       - name: access-token
         in: header
@@ -120,7 +120,7 @@ paths:
         500:
           description: internal server error
       tags:
-        - Users
+        - Orders
 
 
 definitions:
@@ -130,26 +130,26 @@ definitions:
         username:
           description: username for user
           type: string
-          example: tester
+          example: kimame
         email:
           description: email for user
           type: string
-          example: test@gmail.com
+          example: kimame@gmail.com
         password:
           description: password for user
           type: string
-          example: test1234
+          example: kimame1234
         confirm_password:
           description: confirmation password
           type: string
-          example: test1234
+          example: kimame1234
 
   UserLogin:
       type: object
       properties:
-        email:
+        username:
           type: string
-          example: test@gmail.com
+          example: kimame
         password:
           type: string
-          example: test1234
+          example: kimame1234

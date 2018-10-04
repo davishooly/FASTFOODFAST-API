@@ -38,14 +38,13 @@ class SignUp(Resource):
 
         if not validate.valid_name(username):
             return {"message": "username must contain alphanumeric"
-                    " characters and must be more than four characters"}, 400
+                    " characters"}, 400
 
         if not validate.valid_email(email):
             return {"message": "enter valid email"}, 400
 
         if not validate.valid_password(password):
-            return {"message": "password should start with a capital letter"
-                    " and include a number"}, 400
+            return {"message": "password should start with a capital letter, include a number and must be 8 characters long"}, 400
 
         if User().fetch_by_username(username):
             return {"message": "user {} already exists".format(username)}, 400

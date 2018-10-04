@@ -53,8 +53,8 @@ class Foods(Resource):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
 
-        if not validate.valid_price(price):
-            return {"message": "invalid price,price should be integers only"}, 400
+        # if not validate.valid_price(price):
+        #     return {"message": "invalid price, price should be integers only"}, 400
 
         food_item = FoodItem().fetch_by_name(name)
 

@@ -5,7 +5,7 @@ import re
 class Validators:
     def valid_name(self, username):
         """ Valid username """
-        return re.match("^[a-zA-Z0-9]{4,}$", username)
+        return re.match("^[a-zA-Z0-9]+$", username)
 
     def valid_password(self, password):
         """validate for password """
