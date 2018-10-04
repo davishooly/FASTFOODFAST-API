@@ -73,6 +73,32 @@ paths:
       tags:
         - Users
 
+    api/v2/users/{order_id}/orders:
+    post:
+      summary: post order
+      operationId: postOrder
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserpostOrder'
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Users
+
   /api/v2/menu:
       get:
       summary: get menu
@@ -99,6 +125,26 @@ paths:
       tags:
         - Users
 
+  /menu:
+    post:
+      summary: create a food menu
+      operationId: createmenu
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Admin
+
 
   /orders:
     get:
@@ -118,7 +164,7 @@ paths:
         500:
           description: internal server error
       tags:
-        - orders
+        - Admin
 
   /orders/{order_id}:
     get:
@@ -147,7 +193,123 @@ paths:
         500:
           description: internal server error
       tags:
-        - Orders
+        - Admin
+
+  /orders/{order_id}/accept:
+    put:
+      summary: Update a single order by id
+      operationId: Updateorder
+      parameters:
+      - name: access-token
+        in: header
+        type: string
+        required: true
+      - name: user_id
+        required: true
+        in: query
+        type: string
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Admin
+
+  /orders/{order_id}/reject:
+    put:
+      summary: Update a single order by id
+      operationId: Updateorder
+      parameters:
+      - name: access-token
+        in: header
+        type: string
+        required: true
+      - name: user_id
+        required: true
+        in: query
+        type: string
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Admin
+
+  /orders/{order_id}/reject:
+    put:
+      summary: Update a single order by id
+      operationId: Updateorder
+      parameters:
+      - name: access-token
+        in: header
+        type: string
+        required: true
+      - name: user_id
+        required: true
+        in: query
+        type: string
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Admin
+
+    /orders/{order_id}/complete:
+    put:
+      summary: Update a single order by id
+      operationId: Updateorder
+      parameters:
+      - name: access-token
+        in: header
+        type: string
+        required: true
+      - name: user_id
+        required: true
+        in: query
+        type: string
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Admin
 
 definitions:
   UserSignup:
