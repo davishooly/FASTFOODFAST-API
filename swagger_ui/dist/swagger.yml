@@ -1,0 +1,155 @@
+swagger: "2.0"
+host: "127.0.0.1:5000"
+basePath: "/api/v2/"
+securityDefinitions:
+  bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - api_token: []
+  - bearer: []
+info:
+  version: 1.0
+  title: Fast Food Fast
+  license:
+    name: Apache
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /auth/signup:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserSignup'
+      responses:
+        201:
+          description: created
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        409:
+          description: conflict
+        500:
+          description: internal server error
+      tags:
+        - Users
+
+  /auth/login:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserLogin'
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Users
+
+  /orders:
+    get:
+      summary: Fetch all registered users
+      operationId: getUsers
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Users
+
+  /users/{user_id}:
+    get:
+      summary: Get a single user by id
+      operationId: getUser
+      parameters:
+      - name: access-token
+        in: header
+        type: string
+        required: true
+      - name: user_id
+        required: true
+        in: query
+        type: string
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Users
+
+
+definitions:
+  UserSignup:
+      type: object
+      properties:
+        username:
+          description: username for user
+          type: string
+          example: tester
+        email:
+          description: email for user
+          type: string
+          example: test@gmail.com
+        password:
+          description: password for user
+          type: string
+          example: test1234
+        confirm_password:
+          description: confirmation password
+          type: string
+          example: test1234
+
+  UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          example: test1234
