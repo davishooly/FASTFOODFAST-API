@@ -47,7 +47,7 @@ paths:
       tags:
         - Users
 
-  /auth/login:
+  api/v2/auth/login:
     post:
       summary: Login user
       operationId: registerUser
@@ -73,6 +73,33 @@ paths:
       tags:
         - Users
 
+  /api/v2/menu:
+      get:
+      summary: get menu
+      operationId: menu
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/getmenu'
+      responses:
+        200:
+          description: ok
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+        403:
+          description: forbidden status
+        404:
+          description: not found
+        500:
+          description: internal server error
+      tags:
+        - Users
+
+
   /orders:
     get:
       summary: Fetch all orders
@@ -93,7 +120,7 @@ paths:
       tags:
         - orders
 
-  /orders/{user_id}:
+  /orders/{order_id}:
     get:
       summary: Get a single order by id
       operationId: getorder
@@ -121,7 +148,6 @@ paths:
           description: internal server error
       tags:
         - Orders
-
 
 definitions:
   UserSignup:
