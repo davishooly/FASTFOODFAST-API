@@ -18,7 +18,7 @@ def admin_only(f):
         user = User().fetch_by_username(get_jwt_identity())
 
         if not user.is_admin:
-            return {'message': 'Your cannot access this level'}, 401
+            return {'message': 'Anauthorized access, you must be an admin to access this level'}, 401
         return f(*args, **kwargs)
     return wrapper_function
 
@@ -52,6 +52,9 @@ class Foods(Resource):
         if not validate.valid_inputs(description):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
+
+        if not validate.valid_price(price):
+            return {"message": "invalid price,price should be integers only"}, 400
 
         food_item = FoodItem().fetch_by_name(name)
 
@@ -181,7 +184,7 @@ class AcceptFoodOrders(Resource):
             return {'message': 'order already {}'.format(order.status)}, 403
 
         FoodOrder().accept_order(order_id)
-        print(order.status)
+
         return{'message': 'order accepted sucessfully'}, 200
 
 
