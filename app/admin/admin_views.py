@@ -258,7 +258,7 @@ class CompleteFoodOrders(Resource):
             return {"messge": "rejected order cannot be completed"}, 403
 
         if order.status == 'PENDING':
-            return {"message": "accept order fast before completing the order"}, 403
+            return {"message": f"accept order fast before completing the order, order is {order.status}"}, 403
 
         FoodOrder().update_accepted_order_to_completed(order_id)
         return {"messge": "order completed sucessfully"}, 200
