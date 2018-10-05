@@ -1,0 +1,442 @@
+FORMAT: 1A
+HOST: https://fasty-v2.herokuapp.com/api/v2
+
+# AndelaBootCamp32
+FastFoodFast is an application for quick food delivery 
+
+## Authentication
+This API uses OAuth v2 Bearer Token / Personal Access Token for its authentication.
+
+# Group Auth
+
+## Auth Signup [/auth/signup]
+
+### create an account [POST]
+** Create a new account **
+
+
+
+This endpoint creates a new user with fields name, email and a password
+
++ Request (application/json)
+    + Attributes (create an accountRequest)
+
+    + Body
+
+            {
+                "username": 2,
+                "email": "Felix2gmail.com",
+                "password": "felix25467"
+            }
+
+
++ Response 200 
+
+
+
+
+## Auth Login [/auth/login]
+
+### Login [POST]
+** This endpoint logins in a new user **
+
+
+
+A user logins in to his/her account using a username and password files created during signup
+
++ Request (application/json)
+    + Attributes (LoginRequest)
+
+    + Body
+
+            {
+                "username": "kimamedave",
+                "password": "Kindlypass1"
+            }
+
+
++ Response 200 
+
+
+
+
+
+# Group Customers
+
+## Menu [/menu]
+
+### View Menu [GET]
+** Get all food items **
+
+
+
+This endpoint get all food items created by an admin
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Users 2 Orders [/users/2/orders]
+
+### Place an order [POST]
+** place an order **
+
+
+
+When logged in a user can be able to place a new order
+
++ Request (application/json)
+    + Attributes (Place an orderRequest)
+
+    + Body
+
+            {
+                "destination": "kiambu"
+            }
+
+
++ Response 200 
+
+
+
+
+## Users Orders [/users/orders]
+
+### View Order History [GET]
+** View all order history of a specific user **
+
+
+
+This endpoint gets a list of all order history of a specific user
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Orders 7 [/orders/7]
+
+### Delete an order [DELETE]
+** DELETE a specific order**
+
+
+
+This endoint enables a user to delete a specific food item
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+
+# Group Admin
+
+## Menu [/menu]
+
+### Create menu [POST]
+** POST a new food item **
+
+
+
+This endpoint allows an adim user to create a new food item with food name , food description and food price
+
++ Request (application/json)
+    + Attributes (Create menuRequest)
+
+    + Body
+
+            {
+                "name": "Kuku",
+                "description": "kukuandchapatiaswesomepost",
+                "price": 105.99
+            }
+
+
++ Response 200 
+
+
+
++ Response 401 
+
+        UNAUTHORIZED
+
+
+
+    + Body
+
+            {"message":"Your cannot access this level"}
+
+
+### View menu [GET]
+** Get all food items **
+
+
+
+This endpoint get all food items created by admin
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Orders [/orders]
+
+### Get all food orders [GET]
+** GET a list of all orders **
+
+
+
+This endpoints gets a list of all food orders place by customers
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Orders Davido [/orders/davido]
+
+### Get all orders history for specific user [GET]
+** GET a list of all orders of a specific user **
+
+
+
+This endpoints gets a list of all food orders place by specific user
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Accepted Orders [/accepted/orders]
+
+### Accepted orders [GET]
+** GET a list of all accepted food orders **
+
+
+
+This endpoint gets alist of all accepted food orders
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Rejected Orders [/rejected/orders]
+
+### Rejected orders [GET]
+** GET a list of all rejected food orders **
+
+
+
+This endpoint gets alist of all rejected food orders
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Completed Orders [/completed/orders]
+
+### Completed orders [GET]
+** GET a list of all completed food orders **
+
+
+
+This endpoint gets alist of all completed food orders
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Menu 1 [/menu/1]
+
+### Delete a food item [DELETE]
+** DELETE a food item ** 
+
+
+
+An admin can be able delete a specific food item
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Menu 6 [/menu/6]
+
+### Update food item [PUT]
+** PUT method update a specific fooditem item **
+
+
+
+This endpoint enables an admin to edit a specific food item
+
++ Request (application/json)
+    + Attributes (Update food itemRequest)
+
+    + Body
+
+            {
+                "name": "mokimo",
+                "description": "soft beans and smashed bananas ",
+                "price": 399
+            }
+
+
++ Response 200 
+
+
+
+
+## Orders 1 Accept [/orders/1/accept]
+
+### Accept food order [PUT]
+** PUT method update the status a specific order **
+
+
+
+
+
+This endpoint enables an admin to edit status of specific food order to accepted
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Orders 1 Complete [/orders/1/complete]
+
+### Complete food order [PUT]
+** PUT method update the status a specific order **
+
+
+
+
+
+This endpoint enables an admin to edit status of specific food order to completed
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+## Orders 2 Reject [/orders/2/reject]
+
+### Reject food order [PUT]
+** PUT method update the status a specific order **
+
+
+
+
+
+This endpoint enables an admin to edit status of specific food order to rejected
+
++ Request (application/json)
+
+
+
++ Response 200 
+
+
+
+
+
+# Data Structures
+
+## create an accountRequest (object)
+
+
+### Properties
++ `username`: `2` (number, required) 
++ `email`: `Felix2gmail.com` (string, required) 
++ `password`: `felix25467` (string, required) 
+
+
+## LoginRequest (object)
+
+
+### Properties
++ `username`: `kimamedave` (string, required) 
++ `password`: `Kindlypass1` (string, required) 
+
+
+## Place an orderRequest (object)
+
+
+### Properties
++ `destination`: `kiambu` (string, required) 
+
+
+## Create menuRequest (object)
+
+
+### Properties
++ `name`: `Kuku` (string, required) 
++ `description`: `kukuandchapatiaswesomepost` (string, required) 
++ `price`: `105.99` (number, required) 
+
+
+## Create menuErrorResponse (object)
+
+
+### Properties
++ `message`: `Your cannot access this level` (string, required) 
+
+
+## Update food itemRequest (object)
+
+
+### Properties
++ `name`: `mokimo` (string, required) 
++ `description`: `soft beans and smashed bananas ` (string, required) 
++ `price`: `399` (number, required)
