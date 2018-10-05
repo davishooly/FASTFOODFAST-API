@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
-from swagger_ui.swagger_ui import get_swaggerui_blueprint
+# from swagger_ui.swagger_ui import get_swaggerui_blueprint
 
 # local imports
 from instance.config import app_config
