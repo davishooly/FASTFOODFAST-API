@@ -46,8 +46,7 @@ class Foods(Resource):
         validate = validators.Validators()
 
         if not validate.valid_inputs(name):
-            return {"message": "foodname must contain alphanumeric"
-                    " characters only"}, 400
+            return {"message": "foodname must be a string"}, 400
 
         if not validate.valid_inputs(description):
             return {"message": "description must contain alphanumeric"
