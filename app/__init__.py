@@ -25,12 +25,9 @@ def create_app(config_mode):
 
     jwt.init_app(app)
 
-    swagger_url = "/api/v2/doc`"
-    api_url = "swagger.yml"
-
-    swaggerui_blueprint = get_swaggerui_blueprint(swagger_url, api_url)
-
-    app.register_blueprint(swaggerui_blueprint, url_prefix=swagger_url)
+    @app.route('/')
+    def index():
+        return redirect('https://davesapi2.docs.apiary.io/#')
 
     # Regestering blueprints for my views
     from .admin import admin_blueprint as admin_blp
