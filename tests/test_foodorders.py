@@ -33,8 +33,6 @@ class TestFoodOrder(BaseTest):
 
         self.assertEqual(response.status_code, 400)
 
-        self.assertEqual(json.loads(response.data)[
-                         'message'], "enter valid destination")
 
     def test_food_order_does_not_exist(self):
         """ Test food order does not exist """

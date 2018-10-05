@@ -25,12 +25,12 @@ class BaseTest(unittest.TestCase):
             }
         }
         self.user_signup_data = {
-            "username": "kimame123",
+            "username": "kimame",
             "email": "kimame@gmial.com",
             "password": "Kimame1234"
         }
         self.user_login_data = {
-            "username": "kimame123",
+            "username": "kimame",
             "password": "Kimame1234"
         }
         self.admin_login_data = {
@@ -57,8 +57,8 @@ class BaseTest(unittest.TestCase):
         }
 
         self.incorects_pass_data = {
-            "username": "kimame123",
-            "password": "Kimame123"
+            "username": "kimame",
+            "password": "Kimame1235"
         }
         self.email_already_exists_data = {
             "username": "daviskk",
@@ -66,7 +66,7 @@ class BaseTest(unittest.TestCase):
             "password": "Kwemoi12"
         }
         self.existing_usernme_data = {
-            "username": "kimame123",
+            "username": "kimame",
             "email": "kwemoi@gmial.com",
             "password": "Kwemoi12"
         }
@@ -89,7 +89,7 @@ class BaseTest(unittest.TestCase):
             "is_admin": 1
         }
         self.user_doest_not_exist_data = {
-            "username": "kimame",
+            "username": "kimametsrt`",
             "password": "Kimame123"
         }
 

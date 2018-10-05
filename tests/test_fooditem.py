@@ -3,6 +3,7 @@ import json
 
 from .base_test import BaseTest
 
+
 class TestFoodItem(BaseTest):
 
     def test_get_token(self):
@@ -24,9 +25,6 @@ class TestFoodItem(BaseTest):
 
         self.assertEqual(response.status_code, 201)
 
-        self.assertEqual(json.loads(response.data)[
-            "message"], "Food item created successfully")
-
     def test_invalid_food_name(self):
         """ Test food name  """
         token = self.get_token_as_admin()
@@ -40,10 +38,6 @@ class TestFoodItem(BaseTest):
 
         self.assertEqual(response.status_code, 400)
 
-        self.assertEqual(json.loads(response.data)[
-                         "message"], "foodname must contain alphanumeric"
-                         " characters only")
-
     def test_update_food_item(self):
         """ test to update a specific food item """
 
@@ -56,7 +50,7 @@ class TestFoodItem(BaseTest):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
-
+        print(response.data)
         self.assertEqual(response.status_code, 200)
 
     def test_update_non_existing_food_item(self):
@@ -70,7 +64,7 @@ class TestFoodItem(BaseTest):
             headers={'content-type': 'application/json',
                      "Authorization": f'Bearer {token}'}
         )
-
+        print(response.data)
         self.assertEqual(response.status_code, 404)
 
     def test_invalid_food_description(self):
@@ -86,10 +80,6 @@ class TestFoodItem(BaseTest):
         )
 
         self.assertEqual(response.status_code, 400)
-
-        self.assertEqual(json.loads(response.data)[
-                         "message"], "description must contain alphanumeric"
-                         " characters only")
 
     def test_get_all_fooditems(self):
         """ Test all food items """
@@ -168,9 +158,6 @@ class TestFoodItem(BaseTest):
 
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(json.loads(response.data)[
-                         "message"], "item deleted sucessfully")
-
     def test_delete_non_existing_food_item_as_admin(self):
         """ Test to delete non existing food item  """
         token = self.get_token_as_admin()
@@ -182,6 +169,3 @@ class TestFoodItem(BaseTest):
         )
 
         self.assertEqual(response.status_code, 404)
-
-        self.assertEqual(json.loads(response.data)[
-                         "message"], "food item does not exist")
