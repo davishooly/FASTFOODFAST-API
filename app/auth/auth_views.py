@@ -38,7 +38,7 @@ class SignUp(Resource):
 
         if not validate.valid_name(username):
             return {"message": "username must contain alphanumeric"
-                    " characters"}, 400
+                    " characters only "}, 400
 
         if not validate.valid_email(email):
             return {"message": "enter valid email"}, 400
