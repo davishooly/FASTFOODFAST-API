@@ -161,7 +161,7 @@ class FoodOrder(DataStore):
         self.by_name = by_name
         self.destination = destination
         self.date = datetime.now().replace(second=0, microsecond=0)
-        self.status = "PENDING"
+        self.status = "New"
 
     def create(self):
         """ create table foodorder """
@@ -256,7 +256,7 @@ class FoodOrder(DataStore):
 
         self.cur.execute(
             """ UPDATE foodorder SET status=%s WHERE id = %s""", (
-                'accepted', order_id)
+                'Processing', order_id)
         )
         self.save()
         self.close()
@@ -265,7 +265,7 @@ class FoodOrder(DataStore):
         """ update order as completed """
 
         self.cur.execute(
-            """ UPDATE foodorder SET status=%s WHERE id=%s""", ('completed', order_id))
+            """ UPDATE foodorder SET status=%s WHERE id=%s""", ('complete', order_id))
 
         self.save()
         self.close()
@@ -275,7 +275,7 @@ class FoodOrder(DataStore):
 
         self.cur.execute(
             """ UPDATE foodorder SET status=%s WHERE id= %s """, (
-                'rejected', order_id
+                'Cancelled', order_id
             )
         )
         self.save()
@@ -285,7 +285,7 @@ class FoodOrder(DataStore):
         """ fetch all accepted orders """
 
         self.cur.execute(
-            " SELECT * FROM foodorder WHERE status = %s", ('accepted',))
+            " SELECT * FROM foodorder WHERE status = %s", ('Processing',))
 
         accepted_orders = self.cur.fetchall()
         self.save()
@@ -299,7 +299,7 @@ class FoodOrder(DataStore):
         """ fetch all rejected orders """
 
         self.cur.execute(
-            """ SELECT * FROM foodorder WHERE status = %s""", ('rejected',))
+            """ SELECT * FROM foodorder WHERE status = %s""", ('Cancelled',))
 
         rejected_orders = self.cur.fetchall()
         self.save()
@@ -313,7 +313,7 @@ class FoodOrder(DataStore):
         """ fetch all completed orders """
 
         self.cur.execute(
-            """ SELECT * FROM foodorder WHERE status = %s""", ('completed',))
+            """ SELECT * FROM foodorder WHERE status = %s""", ('complete',))
 
         completed_orders = self.cur.fetchall()
         print(completed_orders)

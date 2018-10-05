@@ -31,7 +31,7 @@ class Foods(Resource):
     parser.add_argument("description", type=str, required=True,
                         help="This field can not be left bank")
     parser.add_argument("price", type=int, required=True,
-                        help="This field can not be left bank")
+                        help="Price must be an integer")
 
     @jwt_required
     @admin_only
@@ -51,6 +51,9 @@ class Foods(Resource):
         if not validate.valid_inputs(description):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
+
+        if not type(price) != int:
+            return {"message": "price should be an integer"}, 400
 
         food_item = FoodItem().fetch_by_name(name)
 
@@ -176,7 +179,7 @@ class AcceptFoodOrders(Resource):
         if not order:
             return {"message": "order does not exist"}, 404
 
-        if order.status != 'PENDING':
+        if order.status != 'New':
             return {'message': 'order already {}'.format(order.status)}, 403
 
         FoodOrder().accept_order(order_id)
@@ -212,7 +215,7 @@ class RejectFoodOrders(Resource):
         if not order:
             return {"message": "order does not exist"}, 404
 
-        if order.status != 'PENDING' and order.status != 'accepted':
+        if order.status != 'New' and order.status != 'accepted':
             return {"message": "order already {}".format(order.status)}, 403
 
         FoodOrder().reject_order(order_id)
