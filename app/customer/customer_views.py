@@ -13,12 +13,15 @@ class PostOrders(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument("destination", type=str, required=True,
                         help="This field can not be left bank")
+    parser.add_argument("Quantity", type=int, required=True,
+                        help="Quantity must be an integer")
 
     @jwt_required
     def post(self, food_id):
         data = PostOrders.parser.parse_args()
 
         destination = data["destination"]
+        quantity = data["Quantity"]
 
         validate = validators.Validators()
 
@@ -32,7 +35,8 @@ class PostOrders(Resource):
         if not food_item:
             return {"message": "Food item does not exist"}, 404
 
-        food_order = FoodOrder(current_customer, food_item.name, destination)
+        food_order = FoodOrder(
+            current_customer, food_item.name, destination, quantity)
 
         food_order.add()
 

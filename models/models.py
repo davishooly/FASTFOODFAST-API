@@ -155,11 +155,12 @@ class FoodItem(DataStore):
 
 class FoodOrder(DataStore):
 
-    def __init__(self, order_by=None, by_name=None,  destination=None):
+    def __init__(self, order_by=None, by_name=None,  destination=None, Quantity=None):
         super().__init__()
         self.order_by = order_by
         self.by_name = by_name
         self.destination = destination
+        self.Quantity = Quantity
         self.date = datetime.now().replace(second=0, microsecond=0)
         self.status = "New"
 
@@ -172,6 +173,7 @@ class FoodOrder(DataStore):
                 order_by VARCHAR,
                 by_name VARCHAR,
                 destination VARCHAR,
+                Quantity INTEGER,
                 date TIMESTAMP,
                 status  VARCHAR NOT NULL
             );
@@ -185,9 +187,9 @@ class FoodOrder(DataStore):
 
     def add(self):
         """ add foodorder to table"""
-        SQL = "INSERT INTO foodorder(order_by, by_name, destination, date, status) VALUES( %s,%s, %s, %s, %s)"
+        SQL = "INSERT INTO foodorder(order_by, by_name, destination, Quantity, date, status) VALUES( %s,%s, %s, %s,%s, %s)"
         data = (self.order_by, self.by_name,
-                self.destination, self.date, self.status)
+                self.destination, self.Quantity, self.date, self.status)
         self.cur.execute(SQL, data)
         self.save()
         self.close()
@@ -200,6 +202,7 @@ class FoodOrder(DataStore):
             name=self.by_name,
             status=self.status,
             destination=self.destination,
+            Quanity=self.Quantity,
             date=str(self.date),
         )
 
@@ -330,10 +333,10 @@ class FoodOrder(DataStore):
     def map_foodorder(self, data):
         """ map food order to an object"""
         food_order = FoodOrder(
-            order_by=data[1], by_name=data[2], destination=data[3])
+            order_by=data[1], by_name=data[2], destination=data[3], Quantity=data[4])
         food_order.id = data[0]
-        food_order.date = data[4]
-        food_order.status = data[5]
+        food_order.date = data[5]
+        food_order.status = data[6]
         self = food_order
 
         return self
