@@ -2,6 +2,7 @@
 from flask import Flask, redirect, url_for
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
+from flask_cors import CORS
 
 # from swagger_ui.swagger_ui import get_swaggerui_blueprint
 
@@ -24,6 +25,7 @@ def create_app(config_mode):
     app.config.from_pyfile('config.py')
 
     jwt.init_app(app)
+    CORS(app)
 
     @app.route('/')
     def index():
