@@ -18,12 +18,10 @@ psycopg2==2.7.5
 pycodestyle==2.4.0
 PyJWT==1.6.4
 pylint==1.9.3
-python-apt==1.1.0b1+ubuntu0.16.4.2
 python-debian==0.1.27
 python-dotenv==0.9.1
 pytz==2018.5
 six==1.11.0
-ubuntu-tweak==0.8.8
 virtualenv==16.0.0
 Werkzeug==0.14.1
 wrapt==1.10.11
