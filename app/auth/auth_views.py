@@ -83,5 +83,5 @@ class Login(Resource):
             return {'message': 'incorrect password'}, 401
 
         expires = datetime.timedelta(minutes=30)
-        token = create_access_token(user.username, expires_delta=expires)
+        token = create_access_token(user.serialize(), expires_delta=expires)
         return {'token': token, 'message': 'successfully logged'}, 200
