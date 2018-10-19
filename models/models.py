@@ -13,7 +13,6 @@ class DataStore:
     """ database connection model """
 
     def __init__(self):
-
         self.db_host = current_app.config['DB_HOST']
         self.db_username = current_app.config['DB_USERNAME']
         self.db_password = current_app.config['DB_PASSWORD']

@@ -15,8 +15,7 @@ def admin_only(f):
     ''' Restrict access if not admin '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
-        user = User().fetch_by_username(get_jwt_identity())
-
+        user = User().fetch_by_username(get_jwt_identity()["username"])
         if not user.is_admin:
             return {'message': 'Anauthorized access, you must be an admin to access this level'}, 401
         return f(*args, **kwargs)
@@ -31,7 +30,7 @@ class Foods(Resource):
     parser.add_argument("description", type=str, required=True,
                         help="This field can not be left bank")
     parser.add_argument("price", type=int, required=True,
-                        help="Price must be an integer")
+                        help="")
 
     @jwt_required
     @admin_only
@@ -51,9 +50,6 @@ class Foods(Resource):
         if not validate.valid_inputs(description):
             return {"message": "description must contain alphanumeric"
                     " characters only"}, 400
-
-        if not type(price) != int:
-            return {"message": "price should be an integer"}, 400
 
         food_item = FoodItem().fetch_by_name(name)
 
