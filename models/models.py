@@ -48,11 +48,12 @@ class DataStore:
 
 class FoodItem(DataStore):
 
-    def __init__(self, name=None, description=None, price=None):
+    def __init__(self, name=None, description=None, price=None, path=None):
         super().__init__()
         self.name = name
         self.description = description
         self.price = price
+        self.path = path
         self.date = datetime.now().replace(second=0, microsecond=0)
 
     def create(self):
@@ -64,6 +65,7 @@ class FoodItem(DataStore):
                 name VARCHAR NOT NULL,
                 description TEXT,
                 price INTEGER,
+                path VARCHAR,
                 date  TIMESTAMP
             );
             """
@@ -75,17 +77,17 @@ class FoodItem(DataStore):
 
     def add(self):
         """ add fooditem to table"""
-        SQL = "INSERT INTO fooditems(name, description, price, date) VALUES (%s, %s, %s,%s )"
-        data = (self.name, self.description, self.price, self.date)
+        SQL = "INSERT INTO fooditems(name, description, price, path, date) VALUES (%s, %s, %s,%s, %s )"
+        data = (self.name, self.description, self.price, self.path, self.date)
         self.cur.execute(SQL, data)
         self.save()
 
     def map_fooditems(self, data):
         """ map food order to an object"""
         fooditem = FoodItem(
-            name=data[1], description=data[2], price=data[3])
+            name=data[1], description=data[2], price=data[3], path=data[4])
         fooditem.id = data[0]
-        fooditem.date = data[4]
+        fooditem.date = data[5]
         self = fooditem
 
         return self

@@ -31,6 +31,7 @@ class Foods(Resource):
                         help="This field can not be left bank")
     parser.add_argument("price", type=int, required=True,
                         help="")
+    parser.add_argument("path", type=str, required=True)
 
     @jwt_required
     @admin_only
@@ -41,6 +42,7 @@ class Foods(Resource):
         name = data["name"]
         description = data["description"]
         price = data["price"]
+        path = data["path"]
 
         validate = validators.Validators()
 
@@ -56,7 +58,7 @@ class Foods(Resource):
         if food_item:
             return {"message": "food item already exists"}, 400
 
-        food_item = FoodItem(name, description, price)
+        food_item = FoodItem(name, description, price, path)
         food_item.add()
 
         return {"message": "Food item created successfully"}, 201
