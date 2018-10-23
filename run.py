@@ -12,9 +12,9 @@ app = create_app(os.getenv("APP_SETTINGS") or "default")
 @app.cli.command()
 def migrate():
     """ create tables """
-    # User().create()
+    User().create()
     FoodItem().create()
-    # FoodOrder().create()
+    FoodOrder().create()
 
 
 @app.cli.command()
