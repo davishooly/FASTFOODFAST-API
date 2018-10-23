@@ -98,6 +98,7 @@ class FoodItem(DataStore):
             id=self.id,
             name=self.name,
             description=self.description,
+            path=self.path,
             date=str(self.date),
             price=self.price,
         )
