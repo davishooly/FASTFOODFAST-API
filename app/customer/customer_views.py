@@ -64,7 +64,8 @@ class CustomersOrderHistory(Resource):
 
         current_customer = get_jwt_identity()
 
-        customer_orders = FoodOrder().orders_by_requester(current_customer)
+        customer_orders = FoodOrder().orders_by_requester(
+            current_customer['username'])
 
         if customer_orders:
             return {"order history": [customer_order.serialize() for customer_order in customer_orders]}, 200
