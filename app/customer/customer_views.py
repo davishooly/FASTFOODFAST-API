@@ -36,7 +36,7 @@ class PostOrders(Resource):
             return {"message": "Food item does not exist"}, 404
 
         food_order = FoodOrder(
-            current_customer, food_item.name, destination, quantity)
+            current_customer["username"], food_item.name, destination, quantity)
 
         food_order.add()
 
